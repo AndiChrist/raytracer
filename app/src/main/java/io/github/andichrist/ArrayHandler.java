@@ -6,8 +6,8 @@ import java.util.stream.IntStream;
 public class ArrayHandler {
   public static int[] concat(String a, String b) {
     return IntStream.concat(
-        Arrays.stream(ArrayCache.get(a)),
-        Arrays.stream(ArrayCache.get(b))
+        Arrays.stream((int[])ObjectCache.get(a)),
+        Arrays.stream((int[])ObjectCache.get(b))
     ).toArray();
   }
 }

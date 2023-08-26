@@ -3,11 +3,14 @@ package io.github.andichrist;
 public class TupleHelper {
 
   public static NTuple add(String name1, String name2, Class clazz) {
+    NTuple tuple1 = ((NTuple)ObjectCache.get(name1));
+    NTuple tuple2 = ((NTuple)ObjectCache.get(name2));
+
     return new TupleFactory().create(clazz.getSimpleName(),
-        TupleCache.get(name1).getX() + TupleCache.get(name2).getX(),
-        TupleCache.get(name1).getY() + TupleCache.get(name2).getY(),
-        TupleCache.get(name1).getZ() + TupleCache.get(name2).getZ(),
-        TupleCache.get(name1).getW() + TupleCache.get(name2).getW()
+        tuple1.getX() + tuple2.getX(),
+        tuple1.getY() + tuple2.getY(),
+        tuple1.getZ() + tuple2.getZ(),
+        tuple1.getW() + tuple2.getW()
     );
   }
 
@@ -21,11 +24,14 @@ public class TupleHelper {
   }
 
   public static NTuple subtract(String name1, String name2, Class clazz) {
+    NTuple tuple1 = ((NTuple)ObjectCache.get(name1));
+    NTuple tuple2 = ((NTuple)ObjectCache.get(name2));
+
     return new TupleFactory().create(clazz.getSimpleName(),
-        TupleCache.get(name1).getX() - TupleCache.get(name2).getX(),
-        TupleCache.get(name1).getY() - TupleCache.get(name2).getY(),
-        TupleCache.get(name1).getZ() - TupleCache.get(name2).getZ(),
-        TupleCache.get(name1).getW() - TupleCache.get(name2).getW()
+        tuple1.getX() - tuple2.getX(),
+        tuple1.getY() - tuple2.getY(),
+        tuple1.getZ() - tuple2.getZ(),
+        tuple1.getW() - tuple2.getW()
     );
   }
 

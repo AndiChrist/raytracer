@@ -11,42 +11,42 @@ public class MatricesStepdefs {
     @Given("the following {int}x{int} matrix {word}:")
     public void theFollowingMatrix(int width, int height, String name, DataTable table) {
         Matrix matrix = new Matrix(width, height, table.asLists(Double.class));
-        MatrixCache.set(name, matrix);
+        ObjectCache.set(name, matrix);
     }
 
     @Given("the following matrix {word}:")
     public void theFollowingMatrix(String name, DataTable table) {
         Matrix matrix = new Matrix(table.asLists(Double.class));
-        MatrixCache.set(name, matrix);
+        ObjectCache.set(name, matrix);
     }
 
     @Then("{word}[{int},{int}] = {double}")
     public void checkMatrix(String name, int x, int y, double expected) {
-        double actual = MatrixCache.get(name).get(x, y);
+        double actual = ((Matrix) ObjectCache.get(name)).get(x, y);
 
         assertEquals(expected, actual);
     }
 
     @Then("{word} equals {word}")
     public void aEqualsB(String matrixNameA, String matrixNameB) {
-        Matrix matrixA = MatrixCache.get(matrixNameA);
-        Matrix matrixB = MatrixCache.get(matrixNameB);
+        Matrix matrixA = (Matrix) ObjectCache.get(matrixNameA);
+        Matrix matrixB = (Matrix) ObjectCache.get(matrixNameB);
         assertEquals(matrixA, matrixB);
     }
 
 
     @Then("{word} not equals {word}")
     public void aNotEqualsB(String matrixNameA, String matrixNameB) {
-        Matrix matrixA = MatrixCache.get(matrixNameA);
-        Matrix matrixB = MatrixCache.get(matrixNameB);
+        Matrix matrixA = (Matrix) ObjectCache.get(matrixNameA);
+        Matrix matrixB = (Matrix) ObjectCache.get(matrixNameB);
         assertNotEquals(matrixA, matrixB);
     }
 
 
     @Then("{word} * {word} is the following {int}x{int} matrix:")
     public void aBIsTheFollowingXMatrix(String matrixNameA, String matrixNameB, int x, int y, DataTable table) {
-        Matrix A = MatrixCache.get(matrixNameA);
-        Matrix B = MatrixCache.get(matrixNameB);
+        Matrix A = (Matrix) ObjectCache.get(matrixNameA);
+        Matrix B = (Matrix) ObjectCache.get(matrixNameB);
 
         Matrix expected = new Matrix(table.asLists(Double.class));
         Matrix actual = Matrix.multiply(A, B);
@@ -58,8 +58,8 @@ public class MatricesStepdefs {
 
     @Then("{word} * {word} = tuple\\({int}, {int}, {int}, {int})")
     public void aBTuple(String matrixName, String tupleName, int x, int y, int z, int w) {
-        Tuple tuple = (Tuple) TupleCache.get(tupleName);
-        Matrix matrix = MatrixCache.get(matrixName);
+        Tuple tuple = (Tuple) ObjectCache.get(tupleName);
+        Matrix matrix = (Matrix) ObjectCache.get(matrixName);
 
         //NTuple expected = new Tuple(x, y, z, w);
         Tuple expected = (Tuple) new TupleFactory().create("Tuple", x, y, z, w);
@@ -71,8 +71,8 @@ public class MatricesStepdefs {
 
     @Then("{word} * identity_matrix = {word}")
     public void aIdentity_matrixA(String matrixA, String matrixB) {
-        Matrix matrix = MatrixCache.get(matrixA);
-        Matrix expected = MatrixCache.get(matrixB);
+        Matrix matrix = (Matrix) ObjectCache.get(matrixA);
+        Matrix expected = (Matrix) ObjectCache.get(matrixB);
         int width = matrix.getWidth();
         int height = matrix.getHeight();
 
@@ -90,8 +90,8 @@ public class MatricesStepdefs {
 
     @Then("identity_matrix * {word} = {word}")
     public void identity_matrixAA(String tupleNameA, String tupleNameB) {
-        Tuple tuple = (Tuple) TupleCache.get(tupleNameA);
-        Tuple expected = (Tuple) TupleCache.get(tupleNameB);
+        Tuple tuple = (Tuple) ObjectCache.get(tupleNameA);
+        Tuple expected = (Tuple) ObjectCache.get(tupleNameB);
 
         int width = 4;
         int height = 4;
@@ -109,7 +109,7 @@ public class MatricesStepdefs {
 
     @Then("transpose\\({word}) is the following matrix:")
     public void transposeAIsTheFollowingMatrix(String matrixName, DataTable table) {
-        Matrix matrix = MatrixCache.get(matrixName);
+        Matrix matrix = (Matrix) ObjectCache.get(matrixName);
         Matrix actual = Matrix.transpose(matrix);
 
         Matrix expected = new Matrix(table.asLists(Double.class));
@@ -127,12 +127,12 @@ public class MatricesStepdefs {
         }
 
         Matrix identity_matrix = new Matrix(iMatrix);
-        MatrixCache.set(matrixName, Matrix.transpose(identity_matrix));
+        ObjectCache.set(matrixName, Matrix.transpose(identity_matrix));
     }
 
     @Then("{word} = identity_matrix")
     public void aIdentity_matrix(String matrixName) {
-        Matrix identity_matrix = MatrixCache.get(matrixName);
+        Matrix identity_matrix = (Matrix) ObjectCache.get(matrixName);
 
         double[][] iMatrix = new double[4][4];
         for (int i = 0; i < 4; i++) {
@@ -146,7 +146,7 @@ public class MatricesStepdefs {
 
     @Then("determinant\\({word}) = {int}")
     public void determinantA(String matrixName, int actual) {
-        Matrix matrix = MatrixCache.get(matrixName);
+        Matrix matrix = (Matrix) ObjectCache.get(matrixName);
 
         double determinant = matrix.determinant();
 
