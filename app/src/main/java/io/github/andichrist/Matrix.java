@@ -115,6 +115,22 @@ public class Matrix {
         return determinant;
     }
 
+    public static Matrix subMatrix(Matrix matrix, int row, int column) {
+        double[][] result = new double[matrix.getWidth() - 1][matrix.getHeight() - 1];
+
+        int ri = 0, rj = 0;
+        for (int i = 0; i < matrix.getWidth(); i++) {
+            if (i == row) continue;
+            for (int j = 0; j < matrix.getHeight(); j++) {
+                if (j == column) continue;
+                result[ri][rj++] = matrix.get(i, j);
+            }
+            rj = 0;
+            ri++;
+        }
+
+        return new Matrix(result);
+    }
 
     @Override
     public boolean equals(Object o) {

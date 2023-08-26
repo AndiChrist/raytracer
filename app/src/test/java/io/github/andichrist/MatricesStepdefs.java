@@ -152,4 +152,17 @@ public class MatricesStepdefs {
 
         assertEquals(actual, (int) determinant);
     }
+
+    @Then("submatrix\\({word}, {int}, {int}) is the following {int}x{int} matrix:")
+    public void submatrixAIsTheFollowingXMatrix(String matrixName, int matrixX, int matrixY, int subX, int subY, DataTable table) {
+        Matrix matrix = (Matrix) ObjectCache.get(matrixName);
+        Matrix expected = new Matrix(table.asLists(Double.class));
+
+        Matrix actual = Matrix.subMatrix(matrix, matrixX, matrixY);
+
+        assertEquals(subX, actual.getWidth());
+        assertEquals(subY, actual.getHeight());
+
+        assertEquals(expected, actual);
+    }
 }
