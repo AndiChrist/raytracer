@@ -26,6 +26,17 @@ public class Matrix {
         matrix = rows;
     }
 
+    public static double minor(Matrix matrix, int row, int column) {
+        Matrix subMatrix = subMatrix(matrix, row, column);
+        return determinant(subMatrix.getMatrix(), subMatrix.getWidth());
+    }
+
+    public static double cofactor(Matrix matrix, int row, int column) {
+        Matrix subMatrix = subMatrix(matrix, row, column);
+        return determinant(subMatrix.getMatrix(), subMatrix.getWidth())
+            * ((row + column) % 2 == 0 ? 1 : -1);
+    }
+
     public double[][] getMatrix() {
         return matrix;
     }

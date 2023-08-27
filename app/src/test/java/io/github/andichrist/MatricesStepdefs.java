@@ -1,6 +1,7 @@
 package io.github.andichrist;
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -164,5 +165,31 @@ public class MatricesStepdefs {
         assertEquals(subY, actual.getHeight());
 
         assertEquals(expected, actual);
+    }
+
+    @And("{word} ← submatrix\\({word}, {int}, {int})")
+    public void bSubmatrixA(String matrixNameB, String matrixNameA, int matrixX, int matrixY) {
+        Matrix matrixA = (Matrix) ObjectCache.get(matrixNameA);
+        Matrix matrixB = Matrix.subMatrix(matrixA, matrixX, matrixY);
+        ObjectCache.set(matrixNameB, matrixB);
+    }
+
+    @And("minor\\({word}, {int}, {int}) = {int}")
+    public void minorA(String matrixName, int matrixX, int matrixY, int expectedMinor) {
+        Matrix matrix = (Matrix) ObjectCache.get(matrixName);
+
+        double minor = Matrix.minor(matrix, matrixX, matrixY);
+
+        assertEquals(expectedMinor, minor);
+
+    }
+
+    @And("cofactor\\({word}, {int}, {int}) = {int}")
+    public void cofactorA(String matrixName, int matrixX, int matrixY, int expectedCofactor) {
+        Matrix matrix = (Matrix) ObjectCache.get(matrixName);
+
+        double cofactor = Matrix.cofactor(matrix, matrixX, matrixY);
+
+        assertEquals(expectedCofactor, cofactor);
     }
 }
