@@ -4,8 +4,8 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MatricesStepdefs {
 
@@ -191,5 +191,20 @@ public class MatricesStepdefs {
         double cofactor = Matrix.cofactor(matrix, matrixX, matrixY);
 
         assertEquals(expectedCofactor, cofactor);
+    }
+
+    @And("{word} is invertible")
+    public void aIsInvertible(String matrixName) {
+        Matrix matrix = (Matrix) ObjectCache.get(matrixName);
+
+        assertTrue(matrix.isInvertible());
+    }
+
+
+    @And("{word} is not invertible")
+    public void aIsNotInvertible(String matrixName) {
+        Matrix matrix = (Matrix) ObjectCache.get(matrixName);
+
+        assertFalse(matrix.isInvertible());
     }
 }

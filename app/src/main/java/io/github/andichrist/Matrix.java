@@ -170,4 +170,7 @@ public class Matrix {
         return result.toString();
     }
 
+    public boolean isInvertible() {
+        return determinant() != 0;
+    }
 }
