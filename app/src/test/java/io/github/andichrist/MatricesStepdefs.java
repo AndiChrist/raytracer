@@ -237,6 +237,6 @@ public class MatricesStepdefs {
         assertEquals(cols, matrixActual.getHeight());
 
         Matrix.MatrixComparator comparator = new Matrix.MatrixComparator();
-        assertEquals(0, comparator.compare(matrixExpected.getMatrix(), matrixActual.getMatrix()), "Matrices are not equal");
+        assertEquals(0, comparator.compare(matrixExpected, matrixActual), "Matrices are not equal");
     }
 }

@@ -198,26 +198,27 @@ public class Matrix {
         return new Matrix(matrix2);
     }
 
-    public static class MatrixComparator implements Comparator<double[][]> {
+    public static class MatrixComparator implements Comparator<Matrix> {
         @Override
-        public int compare(double[][] expected, double[][] actual) {
-            if (compareMatrices(expected, actual, epsilon)) {
+        public int compare(Matrix expected, Matrix actual) {
+            if (compareMatrices(expected, actual)) {
                 return 0;
             }
             return 1;
         }
 
-
         private static final double epsilon = 1e-5; // Toleranz für den Vergleich
 
-        private static boolean compareMatrices(double[][] expected, double[][] actual, double epsilon) {
-            if (expected.length != actual.length || expected[0].length != actual[0].length) {
+        private static boolean compareMatrices(Matrix expected, Matrix actual) {
+            double[][] expectedData = expected.matrix;
+            double[][] actualData = actual.matrix;
+            if (expectedData.length != actualData.length || expectedData[0].length != actualData[0].length) {
                 return false; // Matrizengrößen stimmen nicht überein
             }
 
-            for (int i = 0; i < expected.length; i++) {
-                for (int j = 0; j < expected[i].length; j++) {
-                    if (Math.abs(expected[i][j] - actual[i][j]) > epsilon) {
+            for (int i = 0; i < expectedData.length; i++) {
+                for (int j = 0; j < expectedData[i].length; j++) {
+                    if (Math.abs(expectedData[i][j] - actualData[i][j]) > MatrixComparator.epsilon) {
                         return false; // Elemente unterscheiden sich um mehr als epsilon
                     }
                 }
