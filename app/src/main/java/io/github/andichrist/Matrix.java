@@ -26,34 +26,21 @@ public class Matrix {
         matrix = rows;
     }
 
-    public static double minor(Matrix matrix, int row, int column) {
-        Matrix subMatrix = subMatrix(matrix, row, column);
-        return determinant(subMatrix.getMatrix(), subMatrix.getWidth());
+    public double minor(int row, int column) {
+        return subMatrix(row, column).determinant();
     }
 
-    public static double cofactor(Matrix matrix, int row, int column) {
-        Matrix subMatrix = subMatrix(matrix, row, column);
-        return determinant(subMatrix.getMatrix(), subMatrix.getWidth())
+    public double cofactor(int row, int column) {
+        return subMatrix(row, column).determinant()
             * ((row + column) % 2 == 0 ? 1 : -1);
     }
 
-    public double[][] getMatrix() {
-        return matrix;
-    }
-
     public Matrix transpose() {
-        return transpose(this);
-    }
+        double[][] result = new double[this.getWidth()][this.getHeight()];
 
-    public static Matrix transpose(Matrix matrix) {
-        int width = matrix.getWidth();
-        int height = matrix.getHeight();
-
-        double[][] result = new double[width][height];
-
-        for (int row = 0; row < width; row++) {
-            for (int col = 0; col < height; col++) {
-                result[col][row] = matrix.get(row, col);
+        for (int row = 0; row < result.length; row++) {
+            for (int col = 0; col < result[row].length; col++) {
+                result[col][row] = this.get(row, col);
             }
         }
 
@@ -72,13 +59,14 @@ public class Matrix {
         return matrix[0].length;
     }
 
-    public static Matrix multiply(Matrix a, Matrix b) {
-        double[][] result = new double[a.getWidth()][a.getHeight()];
+    public Matrix multiply(Matrix matrix) {
+        double[][] result = new double[this.getWidth()][this.getHeight()];
+
         for (int row = 0; row < result.length; row++) {
             for (int col = 0; col < result[row].length; col++) {
                 double cell = 0;
                 for (int i = 0; i < result.length; i++) {
-                    cell += a.get(row, i) * b.get(i, col);
+                    cell += this.get(row, i) * matrix.get(i, col);
                 }
                 result[row][col] = cell;
             }
@@ -87,12 +75,12 @@ public class Matrix {
         return new Matrix(result);
     }
 
-    public static NTuple multiply(Matrix a, NTuple b) {
-        double[] result = new double[a.getWidth()];
+    public NTuple multiply(NTuple tuple) {
+        double[] result = new double[this.getWidth()];
         for (int row = 0; row < result.length; row++) {
             double cell = 0;
             for (int i = 0; i < result.length; i++) {
-                cell += a.get(row, i) * b.get(i);
+                cell += this.get(row, i) * tuple.get(i);
             }
             result[row] = cell;
         }
@@ -100,12 +88,9 @@ public class Matrix {
         return new TupleFactory().create("Tuple", result[0], result[1], result[2], result[3]);
     }
 
-    public double determinant() {
-        return determinant(getMatrix(), getWidth());
-    }
-
     // Laplace-Entwicklung
-    public static double determinant(double[][] matrix, int n) {
+    public double determinant() {
+        int n = getWidth();
         if (n == 1) {
             return matrix[0][0];
         }
@@ -123,22 +108,22 @@ public class Matrix {
                     }
                 }
             }
-            determinant += sign * matrix[0][i] * determinant(subMatrix, n - 1);
+            determinant += sign * matrix[0][i] * new Matrix(subMatrix).determinant();
             sign *= -1;
         }
 
         return determinant;
     }
 
-    public static Matrix subMatrix(Matrix matrix, int row, int column) {
-        double[][] result = new double[matrix.getWidth() - 1][matrix.getHeight() - 1];
+    public Matrix subMatrix(int row, int column) {
+        double[][] result = new double[this.getWidth() - 1][this.getHeight() - 1];
 
         int ri = 0, rj = 0;
-        for (int i = 0; i < matrix.getWidth(); i++) {
+        for (int i = 0; i < this.getWidth(); i++) {
             if (i == row) continue;
-            for (int j = 0; j < matrix.getHeight(); j++) {
+            for (int j = 0; j < this.getHeight(); j++) {
                 if (j == column) continue;
-                result[ri][rj++] = matrix.get(i, j);
+                result[ri][rj++] = this.get(i, j);
             }
             rj = 0;
             ri++;
@@ -179,19 +164,15 @@ public class Matrix {
     }
 
     public Matrix inverse() {
-        return inverse(this);
-    }
-
-    private static Matrix inverse(Matrix matrix) {
-        if (!matrix.isInvertible())
+        if (!this.isInvertible())
             return null;
 
-        double[][] matrix2 = new double[matrix.getWidth()][matrix.getHeight()];
+        double[][] matrix2 = new double[this.getWidth()][this.getHeight()];
 
-        for (int row = 0; row < matrix.getWidth(); row++) {
-            for (int column = 0; column < matrix.getHeight(); column++) {
-                double c = cofactor(matrix, row, column);
-                matrix2[column][row] =c / determinant(matrix.getMatrix(), matrix.getWidth());
+        for (int row = 0; row < this.getWidth(); row++) {
+            for (int column = 0; column < this.getHeight(); column++) {
+                double c = this.cofactor(row, column);
+                matrix2[column][row] = c / this.determinant();
             }
         }
 

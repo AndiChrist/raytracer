@@ -50,7 +50,7 @@ public class MatricesStepdefs {
         Matrix B = (Matrix) ObjectCache.get(matrixNameB);
 
         Matrix expected = new Matrix(table.asLists(Double.class));
-        Matrix actual = Matrix.multiply(A, B);
+        Matrix actual = A.multiply(B);
 
         assertEquals(expected.getWidth(), x);
         assertEquals(expected.getHeight(), y);
@@ -64,7 +64,7 @@ public class MatricesStepdefs {
 
         //NTuple expected = new Tuple(x, y, z, w);
         Tuple expected = (Tuple) new TupleFactory().create("Tuple", x, y, z, w);
-        Tuple actual = (Tuple) Matrix.multiply(matrix, tuple);
+        Tuple actual = (Tuple) matrix.multiply(tuple);
 
         assertEquals(expected, actual);
 
@@ -84,7 +84,7 @@ public class MatricesStepdefs {
 
         Matrix identity_matrix = new Matrix(iMatrix);
 
-        Matrix actual = Matrix.multiply(matrix, identity_matrix);
+        Matrix actual = matrix.multiply(identity_matrix);
 
         assertEquals(expected, actual);
     }
@@ -103,7 +103,7 @@ public class MatricesStepdefs {
         }
 
         Matrix identity_matrix = new Matrix(iMatrix);
-        Tuple actual = (Tuple) Matrix.multiply(identity_matrix, tuple);
+        Tuple actual = (Tuple) identity_matrix.multiply(tuple);
 
         assertEquals(expected, actual);
     }
@@ -111,7 +111,7 @@ public class MatricesStepdefs {
     @Then("transpose\\({word}) is the following matrix:")
     public void transposeAIsTheFollowingMatrix(String matrixName, DataTable table) {
         Matrix matrix = (Matrix) ObjectCache.get(matrixName);
-        Matrix actual = Matrix.transpose(matrix);
+        Matrix actual = matrix.transpose();
 
         Matrix expected = new Matrix(table.asLists(Double.class));
 
@@ -128,7 +128,7 @@ public class MatricesStepdefs {
         }
 
         Matrix identity_matrix = new Matrix(iMatrix);
-        ObjectCache.set(matrixName, Matrix.transpose(identity_matrix));
+        ObjectCache.set(matrixName, identity_matrix.transpose());
     }
 
     @Then("{word} = identity_matrix")
@@ -159,7 +159,7 @@ public class MatricesStepdefs {
         Matrix matrix = (Matrix) ObjectCache.get(matrixName);
         Matrix expected = new Matrix(table.asLists(Double.class));
 
-        Matrix actual = Matrix.subMatrix(matrix, matrixX, matrixY);
+        Matrix actual = matrix.subMatrix(matrixX, matrixY);
 
         assertEquals(subX, actual.getWidth());
         assertEquals(subY, actual.getHeight());
@@ -170,7 +170,7 @@ public class MatricesStepdefs {
     @And("{word} ← submatrix\\({word}, {int}, {int})")
     public void bSubmatrixA(String matrixNameB, String matrixNameA, int matrixX, int matrixY) {
         Matrix matrixA = (Matrix) ObjectCache.get(matrixNameA);
-        Matrix matrixB = Matrix.subMatrix(matrixA, matrixX, matrixY);
+        Matrix matrixB = matrixA.subMatrix(matrixX, matrixY);
         ObjectCache.set(matrixNameB, matrixB);
     }
 
@@ -178,17 +178,16 @@ public class MatricesStepdefs {
     public void minorA(String matrixName, int matrixX, int matrixY, int expectedMinor) {
         Matrix matrix = (Matrix) ObjectCache.get(matrixName);
 
-        double minor = Matrix.minor(matrix, matrixX, matrixY);
+        double minor = matrix.minor(matrixX, matrixY);
 
         assertEquals(expectedMinor, minor);
-
     }
 
     @And("cofactor\\({word}, {int}, {int}) = {int}")
     public void cofactorA(String matrixName, int matrixX, int matrixY, int expectedCofactor) {
         Matrix matrix = (Matrix) ObjectCache.get(matrixName);
 
-        double cofactor = Matrix.cofactor(matrix, matrixX, matrixY);
+        double cofactor = matrix.cofactor(matrixX, matrixY);
 
         assertEquals(expectedCofactor, cofactor);
     }
