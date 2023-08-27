@@ -227,7 +227,7 @@ public class MatricesStepdefs {
 
     }
 
-    @And("{word} is the following {int}x{int} matrix:")
+    @And("^([A-Za-z]+) is the following (\\d+)x(\\d+) matrix:$")
     public void bIsTheFollowingXMatrix(String matrixName, int rows, int cols, DataTable table) {
         Matrix matrixActual = (Matrix) ObjectCache.get(matrixName);
         Matrix matrixExpected = new Matrix(table.asLists(Double.class));
@@ -237,5 +237,39 @@ public class MatricesStepdefs {
 
         Matrix.MatrixComparator comparator = new Matrix.MatrixComparator();
         assertEquals(0, comparator.compare(matrixExpected, matrixActual), "Matrices are not equal");
+    }
+
+    @And("^inverse\\(([A-Za-z]+)\\) is the following (\\d+)x(\\d+) matrix:$")
+    public void inverseIsTheFollowingXMatrix(String matrixName, int rows, int cols, DataTable table) {
+        Matrix matrixActual = (Matrix) ObjectCache.get(matrixName);
+        Matrix matrixExpected = new Matrix(table.asLists(Double.class));
+
+        assertEquals(rows, matrixActual.getWidth());
+        assertEquals(cols, matrixActual.getHeight());
+
+        Matrix.MatrixComparator comparator = new Matrix.MatrixComparator();
+        assertEquals(0, comparator.compare(matrixExpected, matrixActual.inverse()), "Matrices are not equal");
+    }
+
+    @And("{word} ← {word} * {word}")
+    public void cAB(String matrixNameC, String matrixNameA, String matrixNameB) {
+        Matrix matrixA = (Matrix) ObjectCache.get(matrixNameA);
+        Matrix matrixB = (Matrix) ObjectCache.get(matrixNameB);
+
+        Matrix matrixC = matrixA.multiply(matrixB);
+
+        ObjectCache.set(matrixNameC, matrixC);
+    }
+
+    @Then("{word} * inverse\\({word}) = {word}")
+    public void cInverseBA(String matrixNameC, String matrixNameB, String matrixNameA) {
+        Matrix matrixA = (Matrix) ObjectCache.get(matrixNameA);
+        Matrix matrixB = (Matrix) ObjectCache.get(matrixNameB);
+        Matrix matrixC = (Matrix) ObjectCache.get(matrixNameC);
+
+        Matrix actual = matrixC.multiply(matrixB.inverse());
+
+        Matrix.MatrixComparator comparator = new Matrix.MatrixComparator();
+        assertEquals(0, comparator.compare(matrixA, actual), "Matrices are not equal");
     }
 }
