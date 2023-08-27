@@ -207,4 +207,36 @@ public class MatricesStepdefs {
 
         assertFalse(matrix.isInvertible());
     }
+
+    @And("{word} ← inverse\\({word})")
+    public void bInverseA(String matrixNameB, String matrixNameA) {
+        Matrix matrixA = (Matrix) ObjectCache.get(matrixNameA);
+
+        Matrix matrixB = matrixA.inverse();
+
+        ObjectCache.set(matrixNameB, matrixB);
+    }
+
+    @And("{word}[{int},{int}] = {int}\\/{int}")
+    public void checkContent(String matrixName, int row, int col, int numerator, int denominator) {
+        Matrix matrix = (Matrix) ObjectCache.get(matrixName);
+
+        double expected = (double) numerator / denominator;
+        double actual = matrix.get(row, col);
+
+        assertEquals(expected, actual);
+
+    }
+
+    @And("{word} is the following {int}x{int} matrix:")
+    public void bIsTheFollowingXMatrix(String matrixName, int rows, int cols, DataTable table) {
+        Matrix matrixActual = (Matrix) ObjectCache.get(matrixName);
+        Matrix matrixExpected = new Matrix(table.asLists(Double.class));
+
+        assertEquals(rows, matrixActual.getWidth());
+        assertEquals(cols, matrixActual.getHeight());
+
+        Matrix.MatrixComparator comparator = new Matrix.MatrixComparator();
+        assertEquals(0, comparator.compare(matrixExpected.getMatrix(), matrixActual.getMatrix()), "Matrices are not equal");
+    }
 }

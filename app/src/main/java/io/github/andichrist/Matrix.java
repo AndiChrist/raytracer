@@ -41,6 +41,10 @@ public class Matrix {
         return matrix;
     }
 
+    public Matrix transpose() {
+        return transpose(this);
+    }
+
     public static Matrix transpose(Matrix matrix) {
         int width = matrix.getWidth();
         int height = matrix.getHeight();
@@ -173,4 +177,54 @@ public class Matrix {
     public boolean isInvertible() {
         return determinant() != 0;
     }
+
+    public Matrix inverse() {
+        return inverse(this);
+    }
+
+    private static Matrix inverse(Matrix matrix) {
+        if (!matrix.isInvertible())
+            return null;
+
+        double[][] matrix2 = new double[matrix.getWidth()][matrix.getHeight()];
+
+        for (int row = 0; row < matrix.getWidth(); row++) {
+            for (int column = 0; column < matrix.getHeight(); column++) {
+                double c = cofactor(matrix, row, column);
+                matrix2[column][row] =c / determinant(matrix.getMatrix(), matrix.getWidth());
+            }
+        }
+
+        return new Matrix(matrix2);
+    }
+
+    public static class MatrixComparator implements Comparator<double[][]> {
+        @Override
+        public int compare(double[][] expected, double[][] actual) {
+            if (compareMatrices(expected, actual, epsilon)) {
+                return 0;
+            }
+            return 1;
+        }
+
+
+        private static final double epsilon = 1e-5; // Toleranz für den Vergleich
+
+        private static boolean compareMatrices(double[][] expected, double[][] actual, double epsilon) {
+            if (expected.length != actual.length || expected[0].length != actual[0].length) {
+                return false; // Matrizengrößen stimmen nicht überein
+            }
+
+            for (int i = 0; i < expected.length; i++) {
+                for (int j = 0; j < expected[i].length; j++) {
+                    if (Math.abs(expected[i][j] - actual[i][j]) > epsilon) {
+                        return false; // Elemente unterscheiden sich um mehr als epsilon
+                    }
+                }
+            }
+
+            return true; // Matrizen sind ähnlich genug
+        }
+    }
+
 }
