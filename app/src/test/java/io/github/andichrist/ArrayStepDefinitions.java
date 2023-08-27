@@ -7,7 +7,7 @@ import io.cucumber.java.en.When;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-public class ArrayStepdefs {
+public class ArrayStepDefinitions {
 
   // a ← array(1, 2, 3)
   @Given("a ← array\\({int}, {int}, {int})")

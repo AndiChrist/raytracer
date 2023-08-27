@@ -8,7 +8,7 @@ import io.cucumber.java.en.When;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TupleStepdefs {
+public class TupleStepDefinitions {
 
   @Given("{word} ← tuple\\({double}, {double}, {double}, {double})")
   public void aTuple(String name, double x, double y, double z, double w) {

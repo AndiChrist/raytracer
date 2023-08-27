@@ -12,7 +12,7 @@ import java.util.List;
 
 import javafx.scene.paint.Color;
 
-public class CanvasStepdefs {
+public class CanvasStepDefinitions {
 
   private Canvas c;
   private Color color;

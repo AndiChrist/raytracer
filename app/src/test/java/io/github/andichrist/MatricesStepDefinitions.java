@@ -7,7 +7,7 @@ import io.cucumber.java.en.Then;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MatricesStepdefs {
+public class MatricesStepDefinitions {
 
     @Given("the following {int}x{int} matrix {word}:")
     public void theFollowingMatrix(int width, int height, String name, DataTable table) {
