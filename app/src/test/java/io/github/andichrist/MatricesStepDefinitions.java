@@ -74,17 +74,8 @@ public class MatricesStepDefinitions {
     public void aIdentity_matrixA(String matrixA, String matrixB) {
         Matrix matrix = (Matrix) ObjectCache.get(matrixA);
         Matrix expected = (Matrix) ObjectCache.get(matrixB);
-        int width = matrix.getWidth();
-        int height = matrix.getHeight();
 
-        double[][] iMatrix = new double[width][height];
-        for (int i = 0; i < width; i++) {
-            iMatrix[i][i] = 1;
-        }
-
-        Matrix identity_matrix = new Matrix(iMatrix);
-
-        Matrix actual = matrix.multiply(identity_matrix);
+        Matrix actual = matrix.multiply(Matrix.identityMatrix());
 
         assertEquals(expected, actual);
     }
@@ -94,16 +85,7 @@ public class MatricesStepDefinitions {
         Tuple tuple = (Tuple) ObjectCache.get(tupleNameA);
         Tuple expected = (Tuple) ObjectCache.get(tupleNameB);
 
-        int width = 4;
-        int height = 4;
-
-        double[][] iMatrix = new double[width][height];
-        for (int i = 0; i < width; i++) {
-            iMatrix[i][i] = 1;
-        }
-
-        Matrix identity_matrix = new Matrix(iMatrix);
-        Tuple actual = (Tuple) identity_matrix.multiply(tuple);
+        Tuple actual = (Tuple) Matrix.identityMatrix().multiply(tuple);
 
         assertEquals(expected, actual);
     }
@@ -121,28 +103,14 @@ public class MatricesStepDefinitions {
 
     @Given("{word} ← transpose\\(identity_matrix)")
     public void aTransposeIdentity_matrix(String matrixName) {
-
-        double[][] iMatrix = new double[4][4];
-        for (int i = 0; i < 4; i++) {
-            iMatrix[i][i] = 1;
-        }
-
-        Matrix identity_matrix = new Matrix(iMatrix);
-        ObjectCache.set(matrixName, identity_matrix.transpose());
+        ObjectCache.set(matrixName, Matrix.identityMatrix().transpose());
     }
 
     @Then("{word} = identity_matrix")
     public void aIdentity_matrix(String matrixName) {
         Matrix identity_matrix = (Matrix) ObjectCache.get(matrixName);
 
-        double[][] iMatrix = new double[4][4];
-        for (int i = 0; i < 4; i++) {
-            iMatrix[i][i] = 1;
-        }
-
-        Matrix actual = new Matrix(iMatrix);
-
-        assertEquals(actual, identity_matrix);
+        assertEquals(identity_matrix, Matrix.identityMatrix());
     }
 
     @Then("determinant\\({word}) = {int}")

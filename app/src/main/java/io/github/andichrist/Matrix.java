@@ -209,4 +209,12 @@ public class Matrix {
         }
     }
 
+    public static Matrix identityMatrix() {
+        double[][] iMatrix = new double[4][4];
+        for (int i = 0; i < 4; i++) {
+            iMatrix[i][i] = 1;
+        }
+
+        return new Matrix(iMatrix);
+    }
 }
