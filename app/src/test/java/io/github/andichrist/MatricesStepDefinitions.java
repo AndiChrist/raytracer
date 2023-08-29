@@ -63,8 +63,8 @@ public class MatricesStepDefinitions {
         Matrix matrix = (Matrix) ObjectCache.get(matrixName);
 
         //NTuple expected = new Tuple(x, y, z, w);
-        Tuple expected = (Tuple) new TupleFactory().create("Tuple", x, y, z, w);
-        Tuple actual = (Tuple) matrix.multiply(tuple);
+        Tuple expected = new Tuple(x, y, z, w);
+        Tuple actual = matrix.multiply(tuple);
 
         assertEquals(expected, actual);
 

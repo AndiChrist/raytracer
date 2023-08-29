@@ -1,16 +1,16 @@
 package io.github.andichrist;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.github.andichrist.gfx.PPM;
+import javafx.scene.paint.Color;
+
 import java.io.IOException;
 import java.util.List;
 
-import javafx.scene.paint.Color;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CanvasStepDefinitions {
 
@@ -56,9 +56,9 @@ public class CanvasStepDefinitions {
   public void write_pixelCRed(int x, int y, String colorName) {
     io.github.andichrist.Color red = (io.github.andichrist.Color) ObjectCache.get(colorName);
 
-    double r = red.getX() > 1.0 ? 1.0 : red.getX() < 0 ? 0 : red.getX();
-    double g = red.getY() > 1.0 ? 1.0 : red.getY() < 0 ? 0 : red.getY();
-    double b = red.getZ() > 1.0 ? 1.0 : red.getZ() < 0 ? 0 : red.getZ();
+    double r = red.x() > 1.0 ? 1.0 : red.x() < 0 ? 0 : red.x();
+    double g = red.y() > 1.0 ? 1.0 : red.y() < 0 ? 0 : red.y();
+    double b = red.z() > 1.0 ? 1.0 : red.z() < 0 ? 0 : red.z();
 
     color = new Color(r, g, b, 1.0);
     c.setColor(x, y, color);

@@ -12,69 +12,99 @@ public class TupleStepDefinitions {
 
   @Given("{word} ← tuple\\({double}, {double}, {double}, {double})")
   public void aTuple(String name, double x, double y, double z, double w) {
-    final NTuple tuple = new TupleFactory().create("Tuple", x, y, z, w);
+    final Tuple tuple = new Tuple(x, y, z, w);
     ObjectCache.set(name, tuple);
   }
 
   @Then("{word}.{word} = {double}")
   public void get(String name, String key, double value) {
-    assertEquals(((NTuple) ObjectCache.get(name)).get(key), value, 0.1);
+    NTuple color = (NTuple) ObjectCache.get(name);
+    assertEquals(color.get(key), value, 0.1);
   }
 
   @And("{word} is a point")
   public void aIsAPoint(String name) {
-    assertEquals(((Tuple) ObjectCache.get(name)).getW(), 1.0, 0.1);
+    Tuple tuple = (Tuple) ObjectCache.get(name);
+    assertEquals(tuple.w(), Point.POINT, 0.1);
   }
 
   @And("{word} is not a point")
   public void aIsNotAPoint(String name) {
-    assertEquals(((Tuple) ObjectCache.get(name)).getW(), 0.0, 0.1);
+    Tuple tuple = (Tuple) ObjectCache.get(name);
+    assertEquals(tuple.w(), Vector.VECTOR, 0.1);
   }
 
   @And("{word} is a vector")
   public void aIsAVector(String name) {
-    assertEquals(((Tuple) ObjectCache.get(name)).getW(), 0.0, 0.1);
+    assertEquals(((Tuple) ObjectCache.get(name)).w(), 0.0, 0.1);
   }
 
   @And("{word} is not a vector")
   public void aIsNotAVector(String name) {
-    assertEquals(((Tuple) ObjectCache.get(name)).getW(), 1.0, 0.1);
+    assertEquals(((Tuple) ObjectCache.get(name)).w(), 1.0, 0.1);
   }
 
   @Then("{word} + {word} = tuple\\({double}, {double}, {double}, {double})")
   public void aATuple(String name1, String name2, double x, double y, double z, double w) {
+    Tuple tuple1 = (Tuple) ObjectCache.get(name1);
+    Tuple tuple2 = (Tuple) ObjectCache.get(name2);
+
     Tuple t = new Tuple(x, y, z, w);
     ObjectCache.set("expected", t);
 
     Tuple expected = (Tuple) ObjectCache.get("expected");
-    Tuple actual = (Tuple) TupleHelper.add(name1, name2, Tuple.class);
+    Tuple actual = tuple1.add(tuple2);
 
     assertEquals(expected, actual);
   }
 
   @Given("{word} ← point\\({double}, {double}, {double})")
   public void pPoint(String name, double x, double y, double z) {
-    final NTuple tuple = new TupleFactory().create("Point", x, y, z, Point.POINT);
-    ObjectCache.set(name, tuple);
+    final Point point = new Point(x, y, z);
+    ObjectCache.set(name, point);
   }
 
   @Given("{word} ← vector\\({double}, {double}, {double})")
   public void vVector(String name, double x, double y, double z) {
-    final NTuple tuple = new TupleFactory().create("Vector", x, y, z, Vector.VECTOR);
-    ObjectCache.set(name, tuple);
+    final Vector vector = new Vector(x, y, z);
+    ObjectCache.set(name, vector);
   }
 
   @Then("{word} - {word} = vector\\({double}, {double}, {double})")
   public void pPVector(String name1, String name2, double x, double y, double z) {
     Vector expected = new Vector(x, y, z);
 
-    NTuple p1 = (NTuple) ObjectCache.get(name1);
-    NTuple p2 = (NTuple) ObjectCache.get(name2);
+    NTuple obj1 = (NTuple) ObjectCache.get(name1);
+    NTuple obj2 = (NTuple) ObjectCache.get(name2);
 
-    Vector actual = (Vector) TupleHelper.subtract(p1, p2, Vector.class);
+    // TODO correct this
+    Point p1 = null;
+    Point p2 = null;
+    Vector v1 = null;
+    Vector v2 = null;
 
-    assertTrue(expected.isVector());
-    assertTrue(actual.isVector());
+    Vector actual = null;
+
+    if (obj1 instanceof Point) {
+      p1 = (Point) obj1;
+    }
+    else if (obj1 instanceof Vector) {
+      v1 = (Vector) obj1;
+    }
+
+    if (obj2 instanceof Point) {
+      p2 = (Point) obj2;
+    }
+    else if (obj2 instanceof Vector) {
+      v2 = (Vector) obj2;
+    }
+
+    if (p1 != null && p2 != null)
+      actual = p1.subtract(p2);
+
+    if (v1 != null && v2 != null)
+      actual = v1.subtract(v2);
+
 
     assertEquals(expected, actual);
   }
@@ -86,10 +116,7 @@ public class TupleStepDefinitions {
     Point p = (Point) ObjectCache.get(name0);
     Vector v = (Vector) ObjectCache.get(name1);
 
-    Point actual = (Point) TupleHelper.subtract(p, v, Point.class);
-
-    assertTrue(p.isPoint());
-    assertTrue(v.isVector());
+    Point actual = p.subtract(v);
 
     assertEquals(expected, actual);
   }
@@ -102,21 +129,21 @@ public class TupleStepDefinitions {
     Tuple a = (Tuple) ObjectCache.get("a");
     Tuple b = (Tuple) ObjectCache.get(name);
 
-    Tuple actual = (Tuple) TupleHelper.add(a, b, Tuple.class);
+    Tuple actual = a.add(b);
 
     assertTrue(actual.isZero());
     assertEquals(Tuple.ZERO, actual);
   }
 
   @Then("{word} * {double} = tuple\\({double}, {double}, {double}, {double})")
-  public void aTupleMult(String name, double arg, double x, double y, double z, double w) {
+  public void aTupleMult(String name, double value, double x, double y, double z, double w) {
     Tuple t = new Tuple(x, y, z, w);
     ObjectCache.set("expected", t);
 
     Tuple a = (Tuple) ObjectCache.get(name);
     Tuple expected = (Tuple) ObjectCache.get("expected");
 
-    Tuple actual = (Tuple) TupleHelper.multiply(arg, a, Tuple.class);
+    Tuple actual = a.multiply(value);
 
     assertEquals(expected, actual);
   }
@@ -129,16 +156,16 @@ public class TupleStepDefinitions {
     Tuple a = (Tuple) ObjectCache.get(name);
     Tuple expected = (Tuple) ObjectCache.get("expected");
 
-    Tuple actual = (Tuple) TupleHelper.divide(arg0, a);
+    Tuple actual = a.divide(arg0);
 
     assertEquals(expected, actual);
   }
 
   @Then("magnitude\\({word}) = {double}")
   public void magnitudeV(String name, double expected) {
-    NTuple v = (NTuple) ObjectCache.get(name);
+    Vector v = (Vector) ObjectCache.get(name);
 
-    double actual = TupleHelper.magnitude(v);
+    double actual = v.magnitude();
 
     assertEquals(expected, actual, 1);
   }
@@ -148,7 +175,7 @@ public class TupleStepDefinitions {
     Vector v = (Vector) ObjectCache.get(name);
 
     double expected = Math.sqrt(value);
-    double actual = TupleHelper.magnitude(v);
+    double actual = v.magnitude();
 
     assertEquals(expected, actual, 1);
   }
@@ -157,8 +184,8 @@ public class TupleStepDefinitions {
   public void normalizeVVector(String name, double x, double y, double z) {
     Vector expected = new Vector(x, y, z);
 
-    NTuple v = (NTuple) ObjectCache.get(name);
-    Vector actual = (Vector) TupleHelper.normalize(v, Vector.class);
+    Vector v = (Vector) ObjectCache.get(name);
+    Vector actual = v.normalize();
 
     assertEquals(expected, actual);
   }
@@ -167,29 +194,28 @@ public class TupleStepDefinitions {
   public void normalizeVApproximatelyVector(String name, double x, double y, double z) {
     Vector expected = new Vector(x, y, z);
 
-    NTuple v = (NTuple) ObjectCache.get(name);
-    Vector actual = (Vector) TupleHelper.normalize(v, Vector.class);
+    Vector v = (Vector) ObjectCache.get(name);
+    Vector actual = v.normalize();
 
-    assertEquals(expected.getX(), actual.getX(), 0.00001);
-    assertEquals(expected.getY(), actual.getY(), 0.00001);
-    assertEquals(expected.getZ(), actual.getZ(), 0.00001);
-    assertEquals(expected.getW(), actual.getW(), 0.00001);
+    assertEquals(expected.x(), actual.x(), 0.00001);
+    assertEquals(expected.y(), actual.y(), 0.00001);
+    assertEquals(expected.z(), actual.z(), 0.00001);
   }
 
   @When("{word} ← normalize\\({word})")
   public void normNormalizeV(String norm, String name) {
-    NTuple v = (NTuple) ObjectCache.get(name);
-    Vector actual = (Vector) TupleHelper.normalize(v, Vector.class);
+    Vector v = (Vector) ObjectCache.get(name);
+    Vector actual = v.normalize();
 
     ObjectCache.set(norm, actual);
   }
 
   @Then("dot\\({word}, {word}) = {double}")
   public void dotAB(String arg0, String arg1, double expected) {
-    NTuple v1 = (NTuple) ObjectCache.get(arg0);
-    NTuple v2 = (NTuple) ObjectCache.get(arg1);
+    Vector v1 = (Vector) ObjectCache.get(arg0);
+    Vector v2 = (Vector) ObjectCache.get(arg1);
 
-    double actual = TupleHelper.dot(v1, v2);
+    double actual = v1.dot(v2);
 
     assertEquals(expected, actual, 1);
   }
@@ -201,38 +227,38 @@ public class TupleStepDefinitions {
     Vector a = (Vector) ObjectCache.get(arg0);
     Vector b = (Vector) ObjectCache.get(arg1);
 
-    NTuple actual = TupleHelper.cross(a, b);
+    Vector actual = a.cross(b);
 
     assertEquals(expected, actual);
   }
 
   @Given("{word} ← color\\({double}, {double}, {double})")
   public void color(String name, double x, double y, double z) {
-    final NTuple tuple = new TupleFactory().create("Color", x, y, z, 0);
-    ObjectCache.set(name, tuple);
+    final Color color = new Color(x, y, z);
+    ObjectCache.set(name, color);
   }
 
 
   @Then("{word} + {word} = color\\({double}, {double}, {double})")
   public void cPlusColor(String name1, String name2, double red, double green, double blue) {
-    final Color expected = (Color) new TupleFactory().create("Color", red, green, blue, 0);
+    final Color expected =  new Color(red, green, blue);
 
     Color a = (Color) ObjectCache.get(name1);
     Color b = (Color) ObjectCache.get(name2);
 
-    Color actual = (Color) TupleHelper.add(a, b, Color.class);
+    Color actual = a.add(b);
 
     assertEquals(expected, actual);
   }
 
   @Then("{word} - {word} = color\\({double}, {double}, {double})")
   public void cMinusColor(String name1, String name2, double red, double green, double blue) {
-    final Color expected = (Color) new TupleFactory().create("Color", red, green, blue, 0);
+    final Color expected =  new Color(red, green, blue);
 
     Color a = (Color) ObjectCache.get(name1);
     Color b = (Color) ObjectCache.get(name2);
 
-    Color actual = (Color) TupleHelper.subtract(a, b, Color.class);
+    Color actual = a.subtract(b);
 
     assertEquals(expected, actual);
   }
@@ -252,19 +278,20 @@ public class TupleStepDefinitions {
   // avoid "undefined step reference"
   @Then("{word} * {word} = color\\({double}, {double}, {double})")
   public void cMultColor(String name1, String name2, double red, double green, double blue) {
-    final Color expected = (Color) new TupleFactory().create("Color", red, green, blue, 0);
+    final Color expected = new Color(red, green, blue);
 
     Color a = (Color) ObjectCache.get(name1);
     Color b = (Color) ObjectCache.get(name2);
+    Color actual;
     if (b != null) {
-      Color actual = (Color) TupleHelper.multiply(a, b, Color.class);
-      assertEquals(expected, actual);
+      actual = a.multiply(b);
     }
     else {
       double value = Double.parseDouble(name2);
-      Color actual = (Color) TupleHelper.multiply(value, a, Color.class);
-      assertEquals(expected, actual);
+      actual = a.multiply(value);
     }
+
+    assertEquals(expected, actual);
   }
 
 }

@@ -24,7 +24,7 @@ public class TransformationStepDefinitions {
 
     Point expectedPoint = new Point(x, y, z);
 
-    NTuple actual = transform.multiply(point);
+    Point actual = transform.multiply(point);
 
     assertEquals(expectedPoint, actual);
   }
@@ -36,7 +36,7 @@ public class TransformationStepDefinitions {
 
     Point expectedPoint = new Point(x, y, z);
 
-    NTuple actual = transform.multiply(point);
+    Point actual = transform.multiply(point);
 
     assertEquals(expectedPoint, actual);
   }
@@ -47,7 +47,7 @@ public class TransformationStepDefinitions {
     Vector vectorA = (Vector) ObjectCache.get(vectorNameA);
     Vector vectorB = (Vector) ObjectCache.get(vectorNameB);
 
-    NTuple expected = transform.multiply(vectorA);
+    Vector expected = transform.multiply(vectorA);
 
     assertEquals(expected, vectorB);
   }

@@ -1,6 +1,7 @@
 package io.github.andichrist;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class Matrix {
@@ -75,7 +76,7 @@ public class Matrix {
         return new Matrix(result);
     }
 
-    public NTuple multiply(NTuple tuple) {
+    public Tuple multiply(Tuple tuple) {
         double[] result = new double[this.getWidth()];
         for (int row = 0; row < result.length; row++) {
             double cell = 0;
@@ -85,7 +86,33 @@ public class Matrix {
             result[row] = cell;
         }
 
-        return new TupleFactory().create("Tuple", result[0], result[1], result[2], result[3]);
+        return new Tuple(result[0], result[1], result[2], result[3]);
+    }
+
+    public Point multiply(Point point) {
+        double[] result = new double[this.getWidth()];
+        for (int row = 0; row < result.length; row++) {
+            double cell = 0;
+            for (int i = 0; i < result.length; i++) {
+                cell += this.get(row, i) * point.get(i);
+            }
+            result[row] = cell;
+        }
+
+        return new Point(result[0], result[1], result[2]);
+    }
+
+    public Vector multiply(Vector vector) {
+        double[] result = new double[this.getWidth()];
+        for (int row = 0; row < result.length; row++) {
+            double cell = 0;
+            for (int i = 0; i < result.length; i++) {
+                cell += this.get(row, i) * vector.get(i);
+            }
+            result[row] = cell;
+        }
+
+        return new Vector(result[0], result[1], result[2]);
     }
 
     // Laplace-Entwicklung
