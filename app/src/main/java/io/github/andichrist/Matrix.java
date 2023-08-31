@@ -206,6 +206,23 @@ public class Matrix {
         return new Matrix(matrix2);
     }
 
+
+    public Matrix translation(int x, int y, int z) {
+        matrix[0][3] = x;
+        matrix[1][3] = y;
+        matrix[2][3] = z;
+
+        return new Matrix(matrix);
+    }
+
+    public Matrix scaling(int x, int y, int z) {
+        matrix[0][0] = x;
+        matrix[1][1] = y;
+        matrix[2][2] = z;
+
+        return new Matrix(matrix);
+    }
+
     public static class MatrixComparator implements Comparator<Matrix> {
         @Override
         public int compare(Matrix expected, Matrix actual) {

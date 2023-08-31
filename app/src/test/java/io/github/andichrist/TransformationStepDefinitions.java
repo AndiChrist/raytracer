@@ -9,10 +9,7 @@ public class TransformationStepDefinitions {
 
   @Given("{word} ← translation\\({int}, {int}, {int})")
   public void transformTranslation(String transformName, int x, int y, int z) {
-    Matrix translationMatrix = Matrix.identityMatrix();
-    translationMatrix.matrix[0][3] = x;
-    translationMatrix.matrix[1][3] = y;
-    translationMatrix.matrix[2][3] = z;
+    Matrix translationMatrix = Matrix.identityMatrix().translation(x, y, z);
 
     ObjectCache.set(transformName, translationMatrix);
   }
@@ -51,4 +48,23 @@ public class TransformationStepDefinitions {
 
     assertEquals(expected, vectorB);
   }
+
+  @Given("{word} ← scaling\\({int}, {int}, {int})")
+  public void transformScaling(String transformName, int x, int y, int z) {
+    Matrix translationMatrix = Matrix.identityMatrix().scaling(x, y, z);
+
+    ObjectCache.set(transformName, translationMatrix);
+  }
+
+  @Then("{word} * {word} = vector\\({int}, {int}, {int})")
+  public void transformVVector(String matrixName, String vectorName, int x, int y, int z) {
+    Matrix matrix = (Matrix) ObjectCache.get(matrixName);
+    Vector vector = (Vector) ObjectCache.get(vectorName);
+    Vector actual = new Vector(x, y, z);
+
+    Vector expected = matrix.multiply(vector);
+
+    assertEquals(expected, actual);
+  }
+
 }
