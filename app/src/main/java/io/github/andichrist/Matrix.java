@@ -232,6 +232,15 @@ public class Matrix {
         });
     }
 
+    public static Matrix rotation_y(double r) {
+        return new Matrix(new double[][]{
+            {Math.cos(r), 0, Math.sin(r), 0},
+            {0, 1, 0, 0},
+            {-Math.sin(r), 0, Math.cos(r), 0},
+            {0, 0, 0, 1}
+        });
+    }
+
     public static class MatrixComparator implements Comparator<Matrix> {
         @Override
         public int compare(Matrix expected, Matrix actual) {

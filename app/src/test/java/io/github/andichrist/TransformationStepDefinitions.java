@@ -69,9 +69,7 @@ public class TransformationStepDefinitions {
   }
 
   @And("{word} ← rotation_x\\(π \\/ {int})")
-  public void rotation_xΠ(String matrixName, int divisor) {
-    Point p = (Point) ObjectCache.get("p");
-
+  public void rotation_x(String matrixName, int divisor) {
     Matrix matrix = Matrix.rotation_x( Math.PI / divisor);
 
     ObjectCache.set(matrixName, matrix);
@@ -97,6 +95,13 @@ public class TransformationStepDefinitions {
     Point actual = matrix.multiply(p);
 
     assertEquals(expected, actual);
+  }
+
+  @And("{word} ← rotation_y\\(π \\/ {int})")
+  public void rotation_y(String matrixName, int divisor) {
+    Matrix matrix = Matrix.rotation_y( Math.PI / divisor);
+
+    ObjectCache.set(matrixName, matrix);
   }
 
 }
