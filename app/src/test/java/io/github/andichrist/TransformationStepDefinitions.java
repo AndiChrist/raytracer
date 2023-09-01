@@ -111,4 +111,10 @@ public class TransformationStepDefinitions {
     ObjectCache.set(matrixName, matrix);
   }
 
+  @Given("{word} ← shearing\\({int}, {int}, {int}, {int}, {int}, {int})")
+  public void transformShearing(String matrixName, int xy, int xz, int yx, int yz, int zx, int zy) {
+    Matrix matrix = Matrix.shearing(xy, xz, yx, yz, zx, zy);
+
+    ObjectCache.set(matrixName, matrix);
+  }
 }
