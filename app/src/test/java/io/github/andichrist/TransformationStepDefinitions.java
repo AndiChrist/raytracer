@@ -1,5 +1,6 @@
 package io.github.andichrist;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
@@ -26,8 +27,8 @@ public class TransformationStepDefinitions {
     assertEquals(expectedPoint, actual);
   }
 
-  @Then("inv * {word} = point\\({int}, {int}, {int})")
-  public void invPoint(String pointName, int x, int y, int z) {
+  @Then("inv * {word} = point\\({double}, {double}, {double})")
+  public void invPoint(String pointName, double x, double y, double z) {
     Matrix transform = (Matrix) ObjectCache.get("inv");
     Point point = (Point) ObjectCache.get(pointName);
 
@@ -63,6 +64,37 @@ public class TransformationStepDefinitions {
     Vector actual = new Vector(x, y, z);
 
     Vector expected = matrix.multiply(vector);
+
+    assertEquals(expected, actual);
+  }
+
+  @And("{word} ← rotation_x\\(π \\/ {int})")
+  public void rotation_xΠ(String matrixName, int divisor) {
+    Point p = (Point) ObjectCache.get("p");
+
+    Matrix matrix = Matrix.rotation_x( Math.PI / divisor);
+
+    ObjectCache.set(matrixName, matrix);
+  }
+
+  @Then("half_quarter * {word} = point\\({double}, {double}, {double})")
+  public void half_quarterPPoint(String pointName, double x, double y, double z) {
+    Matrix matrix = (Matrix) ObjectCache.get("half_quarter");
+    Point p = (Point) ObjectCache.get(pointName);
+
+    Point expected = new Point(x, y, z);
+    Point actual = matrix.multiply(p);
+
+    assertEquals(expected, actual);
+  }
+
+  @Then("full_quarter * {word} = point\\({double}, {double}, {double})")
+  public void full_quarterPPoint(String pointName, double x, double y, double z) {
+    Matrix matrix = (Matrix) ObjectCache.get("full_quarter");
+    Point p = (Point) ObjectCache.get(pointName);
+
+    Point expected = new Point(x, y, z);
+    Point actual = matrix.multiply(p);
 
     assertEquals(expected, actual);
   }

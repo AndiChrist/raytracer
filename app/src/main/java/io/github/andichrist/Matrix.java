@@ -223,6 +223,15 @@ public class Matrix {
         return new Matrix(matrix);
     }
 
+    public static Matrix rotation_x(double r) {
+        return new Matrix(new double[][]{
+            {1, 0, 0, 0},
+            {0, Math.cos(r), -Math.sin(r), 0},
+            {0, Math.sin(r), Math.cos(r), 0},
+            {0, 0, 0, 1}
+        });
+    }
+
     public static class MatrixComparator implements Comparator<Matrix> {
         @Override
         public int compare(Matrix expected, Matrix actual) {

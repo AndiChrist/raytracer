@@ -36,3 +36,20 @@ Feature: Transformations
     Given transform ← scaling(-1, 1, 1)
     And p ← point(2, 3, 4)
     Then transform * p = point(-2, 3, 4)
+
+  # √2/2 = 0,707106781186548
+  Scenario: Rotating a point around the x axis
+    Given p ← point(0, 1, 0)
+    And half_quarter ← rotation_x(π / 4)
+    And full_quarter ← rotation_x(π / 2)
+                          # point(0, √2/2,              √2/2)
+    Then half_quarter * p = point(0, 0.707106781186548, 0.707106781186548)
+    And full_quarter * p = point(0, 0, 1)
+
+  # √2/2 = 0,707106781186548
+  Scenario: The inverse of an x-rotation rotates in the opposite direction
+    Given p ← point(0, 1, 0)
+    And half_quarter ← rotation_x(π / 4)
+    And inv ← inverse(half_quarter)
+                 # point(0, √2/2,              -√2/2)
+    Then inv * p = point(0, 0.707106781186548, -0.707106781186548)

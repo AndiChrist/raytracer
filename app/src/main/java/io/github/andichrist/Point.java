@@ -69,4 +69,16 @@ public record Point(double x, double y, double z) implements NTuple {
         z - point.z()
     );
   }
+
+  @Override
+  public boolean equals(Object o) {
+    double epsilon = 1e-5; // Toleranz für den Vergleich
+
+    if (this == o) return true;
+    if (!(o instanceof Point point)) return false;
+
+    return Math.abs(point.x - x) < epsilon
+        && Math.abs(point.y - y) < epsilon
+        && Math.abs(point.z - z) < epsilon;
+  }
 }
