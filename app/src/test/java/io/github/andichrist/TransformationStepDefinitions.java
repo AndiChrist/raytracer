@@ -104,4 +104,11 @@ public class TransformationStepDefinitions {
     ObjectCache.set(matrixName, matrix);
   }
 
+  @And("{word} ← rotation_z\\(π \\/ {int})")
+  public void rotation_z(String matrixName, int divisor) {
+    Matrix matrix = Matrix.rotation_z( Math.PI / divisor);
+
+    ObjectCache.set(matrixName, matrix);
+  }
+
 }
