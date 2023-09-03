@@ -4,18 +4,15 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class Matrix {
-    double[][] matrix;
-
-    public Matrix(double[][] matrix) {
-        this.matrix = matrix;
-    }
+public record Matrix(double[][] matrix) {
 
     public Matrix(List<List<Double>> testData) {
-        this(testData.size(), testData.get(0).size(), testData);
+        this(transformTestData(testData));
     }
 
-    public Matrix(int numRows, int numCols, List<List<Double>> testData) {
+    private static double[][] transformTestData(List<List<Double>> testData) {
+        int numRows = testData.size();
+        int numCols = testData.get(0).size();
         double[][] rows = new double[numRows][numCols];
         for (int row = 0; row < numRows; row++) {
             List<Double> rowDoubles = testData.get(row);
@@ -24,7 +21,7 @@ public class Matrix {
             }
         }
 
-        matrix = rows;
+        return rows;
     }
 
     public double minor(int row, int column) {
@@ -87,32 +84,6 @@ public class Matrix {
         }
 
         return new Tuple(result[0], result[1], result[2], result[3]);
-    }
-
-    public Point multiply(Point point) {
-        double[] result = new double[this.getWidth()];
-        for (int row = 0; row < result.length; row++) {
-            double cell = 0;
-            for (int i = 0; i < result.length; i++) {
-                cell += this.get(row, i) * point.get(i);
-            }
-            result[row] = cell;
-        }
-
-        return new Point(result[0], result[1], result[2]);
-    }
-
-    public Vector multiply(Vector vector) {
-        double[] result = new double[this.getWidth()];
-        for (int row = 0; row < result.length; row++) {
-            double cell = 0;
-            for (int i = 0; i < result.length; i++) {
-                cell += this.get(row, i) * vector.get(i);
-            }
-            result[row] = cell;
-        }
-
-        return new Vector(result[0], result[1], result[2]);
     }
 
     // Laplace-Entwicklung

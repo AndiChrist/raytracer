@@ -40,8 +40,10 @@ Feature: Transformations
   # √2/2 = 0,707106781186548
   Scenario: Rotating a point around the x axis
     Given p ← point(0, 1, 0)
-    And half_quarter ← rotation_x(π / 4)
-    And full_quarter ← rotation_x(π / 2)
+    # π / 4 = 0,785398163397448
+    And half_quarter ← rotation_x(0.785398163397448)
+    # π / 2 = 1,570796326794897
+    And full_quarter ← rotation_x(1.570796326794897)
                           # point(0, √2/2,              √2/2)
     Then half_quarter * p = point(0, 0.707106781186548, 0.707106781186548)
     And full_quarter * p = point(0, 0, 1)
@@ -49,23 +51,28 @@ Feature: Transformations
   # √2/2 = 0,707106781186548
   Scenario: The inverse of an x-rotation rotates in the opposite direction
     Given p ← point(0, 1, 0)
-    And half_quarter ← rotation_x(π / 4)
+    # π / 4 = 0,785398163397448
+    And half_quarter ← rotation_x(0.785398163397448)
     And inv ← inverse(half_quarter)
                  # point(0, √2/2,              -√2/2)
     Then inv * p = point(0, 0.707106781186548, -0.707106781186548)
 
   Scenario: Rotating a point around the y axis
     Given p ← point(0, 0, 1)
-    And half_quarter ← rotation_y(π / 4)
-    And full_quarter ← rotation_y(π / 2)
+    # π / 4 = 0,785398163397448
+    And half_quarter ← rotation_y(0.785398163397448)
+    # π / 2 = 1,570796326794897
+    And full_quarter ← rotation_y(1.570796326794897)
                           # point(√2/2,              0, √2/2)
     Then half_quarter * p = point(0.707106781186548, 0, 0.707106781186548)
     And full_quarter * p = point(1, 0, 0)
 
   Scenario: Rotating a point around the z axis
     Given p ← point(0, 1, 0)
-    And half_quarter ← rotation_z(π / 4)
-    And full_quarter ← rotation_z(π / 2)
+    # π / 4 = 0,785398163397448
+    And half_quarter ← rotation_z(0.785398163397448)
+    # π / 2 = 1,570796326794897
+    And full_quarter ← rotation_z(1.570796326794897)
                           # point(-√2/2,              √2/2,              0)
     Then half_quarter * p = point(-0.707106781186548, 0.707106781186548, 0)
     And full_quarter * p = point(-1, 0, 0)
@@ -99,3 +106,28 @@ Feature: Transformations
     Given transform ← shearing(0, 0, 0, 0, 0, 1)
     And p ← point(2, 3, 4)
     Then transform * p = point(2, 3, 7)
+
+  Scenario: Individual transformations are applied in sequence
+    Given p ← point(1, 0, 1)
+    # π / 2 = 1,570796326794897
+    And A ← rotation_x(1.570796326794897)
+    And B ← scaling(5, 5, 5)
+    And C ← translation(10, 5, 7)
+    # apply rotation first
+    When point p2 ← A * p
+    Then p2 = point(1, -1, 0)
+    # then apply scaling
+    When point p3 ← B * p2
+    Then p3 = point(5, -5, 0)
+    # then apply translation
+    When point p4 ← C * p3
+    Then p4 = point(15, 0, 7)
+
+  Scenario: Chained transformations must be applied in reverse order
+    Given p ← point(1, 0, 1)
+    # π / 2 = 1,570796326794897
+    And A ← rotation_x(1.570796326794897)
+    And B ← scaling(5, 5, 5)
+    And C ← translation(10, 5, 7)
+    When T ← C * B * A
+    Then T * p = point(15, 0, 7)

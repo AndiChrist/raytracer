@@ -3,6 +3,7 @@ package io.github.andichrist;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,11 +19,11 @@ public class TransformationStepDefinitions {
   @Then("transform * {word} = point\\({int}, {int}, {int})")
   public void transformPoint(String pointName, int x, int y, int z) {
     Matrix transform = (Matrix) ObjectCache.get("transform");
-    Point point = (Point) ObjectCache.get(pointName);
+    Tuple point = (Tuple) ObjectCache.get(pointName);
 
-    Point expectedPoint = new Point(x, y, z);
+    Tuple expectedPoint = Tuple.newPoint(x, y, z);
 
-    Point actual = transform.multiply(point);
+    Tuple actual = transform.multiply(point);
 
     assertEquals(expectedPoint, actual);
   }
@@ -30,11 +31,11 @@ public class TransformationStepDefinitions {
   @Then("inv * {word} = point\\({double}, {double}, {double})")
   public void invPoint(String pointName, double x, double y, double z) {
     Matrix transform = (Matrix) ObjectCache.get("inv");
-    Point point = (Point) ObjectCache.get(pointName);
+    Tuple point = (Tuple) ObjectCache.get(pointName);
 
-    Point expectedPoint = new Point(x, y, z);
+    Tuple expectedPoint = Tuple.newPoint(x, y, z);
 
-    Point actual = transform.multiply(point);
+    Tuple actual = transform.multiply(point);
 
     assertEquals(expectedPoint, actual);
   }
@@ -42,10 +43,10 @@ public class TransformationStepDefinitions {
   @Then("transform * {word} = {word}")
   public void transformVV(String vectorNameA, String vectorNameB) {
     Matrix transform = (Matrix) ObjectCache.get("transform");
-    Vector vectorA = (Vector) ObjectCache.get(vectorNameA);
-    Vector vectorB = (Vector) ObjectCache.get(vectorNameB);
+    Tuple vectorA = (Tuple) ObjectCache.get(vectorNameA);
+    Tuple vectorB = (Tuple) ObjectCache.get(vectorNameB);
 
-    Vector expected = transform.multiply(vectorA);
+    Tuple expected = transform.multiply(vectorA);
 
     assertEquals(expected, vectorB);
   }
@@ -60,28 +61,21 @@ public class TransformationStepDefinitions {
   @Then("{word} * {word} = vector\\({int}, {int}, {int})")
   public void transformVVector(String matrixName, String vectorName, int x, int y, int z) {
     Matrix matrix = (Matrix) ObjectCache.get(matrixName);
-    Vector vector = (Vector) ObjectCache.get(vectorName);
-    Vector actual = new Vector(x, y, z);
+    Tuple vector = (Tuple) ObjectCache.get(vectorName);
+    Tuple actual = Tuple.newVector(x, y, z);
 
-    Vector expected = matrix.multiply(vector);
+    Tuple expected = matrix.multiply(vector);
 
     assertEquals(expected, actual);
-  }
-
-  @And("{word} ← rotation_x\\(π \\/ {int})")
-  public void rotation_x(String matrixName, int divisor) {
-    Matrix matrix = Matrix.rotation_x( Math.PI / divisor);
-
-    ObjectCache.set(matrixName, matrix);
   }
 
   @Then("half_quarter * {word} = point\\({double}, {double}, {double})")
   public void half_quarterPPoint(String pointName, double x, double y, double z) {
     Matrix matrix = (Matrix) ObjectCache.get("half_quarter");
-    Point p = (Point) ObjectCache.get(pointName);
+    Tuple p = (Tuple) ObjectCache.get(pointName);
 
-    Point expected = new Point(x, y, z);
-    Point actual = matrix.multiply(p);
+    Tuple expected = Tuple.newPoint(x, y, z);
+    Tuple actual = matrix.multiply(p);
 
     assertEquals(expected, actual);
   }
@@ -89,24 +83,31 @@ public class TransformationStepDefinitions {
   @Then("full_quarter * {word} = point\\({double}, {double}, {double})")
   public void full_quarterPPoint(String pointName, double x, double y, double z) {
     Matrix matrix = (Matrix) ObjectCache.get("full_quarter");
-    Point p = (Point) ObjectCache.get(pointName);
+    Tuple p = (Tuple) ObjectCache.get(pointName);
 
-    Point expected = new Point(x, y, z);
-    Point actual = matrix.multiply(p);
+    Tuple expected = Tuple.newPoint(x, y, z);
+    Tuple actual = matrix.multiply(p);
 
     assertEquals(expected, actual);
   }
 
-  @And("{word} ← rotation_y\\(π \\/ {int})")
-  public void rotation_y(String matrixName, int divisor) {
-    Matrix matrix = Matrix.rotation_y( Math.PI / divisor);
+  @And("{word} ← rotation_x\\({double})")
+  public void rotation_x(String matrixName, double value) {
+    Matrix matrix = Matrix.rotation_x(value);
 
     ObjectCache.set(matrixName, matrix);
   }
 
-  @And("{word} ← rotation_z\\(π \\/ {int})")
-  public void rotation_z(String matrixName, int divisor) {
-    Matrix matrix = Matrix.rotation_z( Math.PI / divisor);
+  @And("{word} ← rotation_y\\({double})")
+  public void rotation_y(String matrixName, double value) {
+    Matrix matrix = Matrix.rotation_y(value);
+
+    ObjectCache.set(matrixName, matrix);
+  }
+
+  @And("{word} ← rotation_z\\({double})")
+  public void rotation_z(String matrixName, double value) {
+    Matrix matrix = Matrix.rotation_z(value);
 
     ObjectCache.set(matrixName, matrix);
   }
@@ -116,5 +117,46 @@ public class TransformationStepDefinitions {
     Matrix matrix = Matrix.shearing(xy, xz, yx, yz, zx, zy);
 
     ObjectCache.set(matrixName, matrix);
+  }
+
+  @And("point {word} ← {word} * {word}")
+  public void matrixMultiplication(String p1Name, String AName, String pName) {
+    Matrix matrixA = (Matrix) ObjectCache.get(AName);
+    Tuple pointP = (Tuple) ObjectCache.get(pName);
+
+    Tuple p1 = matrixA.multiply(pointP);
+
+    ObjectCache.set(p1Name, p1);
+  }
+
+  @Then("{word} = point\\({double}, {double}, {double})")
+  public void p2_point(String pointName, double x, double y, double z) {
+    Tuple actual = (Tuple) ObjectCache.get(pointName);
+    Tuple expected = Tuple.newPoint(x, y, z);
+
+    assertEquals(expected, actual);
+  }
+
+  @When("{word} ← {word} * {word} * {word}")
+  public void tCBA(String TName, String CName, String BName, String AName) {
+    Matrix C = (Matrix) ObjectCache.get(CName);
+    Matrix B = (Matrix) ObjectCache.get(BName);
+    Matrix A = (Matrix) ObjectCache.get(AName);
+
+    Matrix T = C.multiply(B).multiply(A);
+
+    ObjectCache.set(TName, T);
+
+  }
+
+  @Then("T * {word} = point\\({double}, {double}, {double})")
+  public void tPPoint(String pointName, double x, double y, double z) {
+    Matrix transform = (Matrix) ObjectCache.get("T");
+    Tuple point = (Tuple) ObjectCache.get(pointName);
+
+    Tuple expected = Tuple.newPoint(x, y, z);
+    Tuple actual = transform.multiply(point);
+
+    assertEquals(expected, actual);
   }
 }

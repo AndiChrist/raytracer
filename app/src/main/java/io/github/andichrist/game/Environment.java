@@ -1,6 +1,6 @@
 package io.github.andichrist.game;
 
-import io.github.andichrist.Vector;
+import io.github.andichrist.Tuple;
 
-public record Environment(Vector gravity, Vector wind) {
+public record Environment(Tuple gravity, Tuple wind) {
 }

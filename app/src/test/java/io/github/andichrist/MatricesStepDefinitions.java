@@ -9,10 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MatricesStepDefinitions {
 
-    @Given("the following {int}x{int} matrix {word}:")
-    public void theFollowingMatrix(int width, int height, String name, DataTable table) {
-        Matrix matrix = new Matrix(width, height, table.asLists(Double.class));
-        ObjectCache.set(name, matrix);
+    @Given("the following 2x2/3x3/4x4 matrix {word}:")
+    public void theFollowingXXMatrix(String name, DataTable table) {
+        theFollowingMatrix(name, table);
     }
 
     @Given("the following matrix {word}:")
@@ -59,10 +58,9 @@ public class MatricesStepDefinitions {
 
     @Then("{word} * {word} = tuple\\({int}, {int}, {int}, {int})")
     public void aBTuple(String matrixName, String tupleName, int x, int y, int z, int w) {
-        Tuple tuple = (Tuple) ObjectCache.get(tupleName);
         Matrix matrix = (Matrix) ObjectCache.get(matrixName);
+        Tuple tuple = (Tuple) ObjectCache.get(tupleName);
 
-        //NTuple expected = new Tuple(x, y, z, w);
         Tuple expected = new Tuple(x, y, z, w);
         Tuple actual = matrix.multiply(tuple);
 
@@ -85,7 +83,7 @@ public class MatricesStepDefinitions {
         Tuple tuple = (Tuple) ObjectCache.get(tupleNameA);
         Tuple expected = (Tuple) ObjectCache.get(tupleNameB);
 
-        Tuple actual = (Tuple) Matrix.identityMatrix().multiply(tuple);
+        Tuple actual = Matrix.identityMatrix().multiply(tuple);
 
         assertEquals(expected, actual);
     }
@@ -103,7 +101,8 @@ public class MatricesStepDefinitions {
 
     @Given("{word} ← transpose\\(identity_matrix)")
     public void aTransposeIdentity_matrix(String matrixName) {
-        ObjectCache.set(matrixName, Matrix.identityMatrix().transpose());
+        Matrix matrix = Matrix.identityMatrix().transpose();
+        ObjectCache.set(matrixName, matrix);
     }
 
     @Then("{word} = identity_matrix")
@@ -219,8 +218,8 @@ public class MatricesStepDefinitions {
         assertEquals(0, comparator.compare(matrixExpected, matrixActual.inverse()), "Matrices are not equal");
     }
 
-    @And("{word} ← {word} * {word}")
-    public void cAB(String matrixNameC, String matrixNameA, String matrixNameB) {
+    @And("matrix {word} ← {word} * {word}")
+    public void matrixMultiplication(String matrixNameC, String matrixNameA, String matrixNameB) {
         Matrix matrixA = (Matrix) ObjectCache.get(matrixNameA);
         Matrix matrixB = (Matrix) ObjectCache.get(matrixNameB);
 

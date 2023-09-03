@@ -54,7 +54,7 @@ public class CanvasStepDefinitions {
 */
   @When("write_pixel\\(c, {int}, {int}, {word})")
   public void write_pixelCRed(int x, int y, String colorName) {
-    io.github.andichrist.Color red = (io.github.andichrist.Color) ObjectCache.get(colorName);
+    Tuple red = (Tuple) ObjectCache.get(colorName);
 
     double r = red.x() > 1.0 ? 1.0 : red.x() < 0 ? 0 : red.x();
     double g = red.y() > 1.0 ? 1.0 : red.y() < 0 ? 0 : red.y();
