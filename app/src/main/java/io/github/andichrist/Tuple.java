@@ -39,18 +39,6 @@ public record Tuple(double x, double y, double z, double w) {
     this(x, y, z, VECTOR);
   }
 
-  /*
-  public Point toPoint() {
-    if (w != Point.POINT) throw new RuntimeException("Tuple is not a Point.");
-    return new Point(this);
-  }
-
-  public Vector toVector() {
-    if (w != Vector.VECTOR) throw new RuntimeException("Tuple is not a Vector.");
-    return new Vector(this);
-  }
-   */
-
   public Tuple add(Tuple tuple) {
     return new Tuple(
         x + tuple.x(),
@@ -101,8 +89,7 @@ public record Tuple(double x, double y, double z, double w) {
     return new Tuple(
         x / magnitude,
         y / magnitude,
-        z / magnitude,
-        w / magnitude
+        z / magnitude
     );
   }
 
