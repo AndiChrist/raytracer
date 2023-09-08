@@ -98,6 +98,12 @@ public record Tuple(double x, double y, double z, double w) {
         z * tuple.z;
   }
 
+  public static double dot(Tuple tupleA, Tuple tupleB) {
+    return tupleA.x * tupleB.x +
+        tupleA.y * tupleB.y +
+        tupleA.z * tupleB.z;
+  }
+
   public Tuple cross(Tuple tuple) {
     return new Tuple(
         y * tuple.z - z * tuple.y,

@@ -1,5 +1,6 @@
 package io.github.andichrist;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -51,5 +52,36 @@ public class RayStepDefinitions {
     var r = (Ray) ObjectCache.get(rayName);
 
     assertEquals(r.position(pos), point);
+  }
+
+  @And("s ← sphere\\()")
+  public void sSphere() {
+    var s = Ray.sphere();
+
+    ObjectCache.set("sphere" + s.id(), s);
+  }
+
+  @When("{word} ← intersect\\({word}, {word})")
+  public void xsIntersectSR(String intersectsName, String sphereName, String rayName) {
+    var s = (Sphere) ObjectCache.get(sphereName + 1);
+    var r = (Ray) ObjectCache.get(rayName);
+
+    var xs = Ray.intersect(s, r);
+
+    ObjectCache.set(intersectsName, xs);
+  }
+
+  @Then("{word}.count = {int}")
+  public void xsCount(String intersectsName, int count) {
+    var xs = (double[]) ObjectCache.get(intersectsName);
+
+    assertEquals(xs.length, count);
+  }
+
+  @And("{word}[{int}] = {double}")
+  public void xs(String intersectsName, int index, double value) {
+    var xs = (double[]) ObjectCache.get(intersectsName);
+
+    assertEquals(xs[index], value);
   }
 }
