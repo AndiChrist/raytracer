@@ -5,8 +5,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.github.andichrist.gfx.PPM;
-import javafx.scene.paint.Color;
 
+import java.awt.*;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CanvasStepDefinitions {
 
   private Canvas c;
-  private Color color;
 
   @Given("c ← canvas\\({int}, {int})")
   public void cCanvas(int width, int height) {
@@ -53,25 +52,38 @@ public class CanvasStepDefinitions {
 */
   @When("write_pixel\\(c, {int}, {int}, {word})")
   public void write_pixelCRed(int x, int y, String colorName) {
-    var red = (Tuple) ObjectCache.get(colorName);
+    var pixelColor = (Tuple) ObjectCache.get(colorName);
 
-    var r = red.x() > 1.0 ? 1.0 : red.x() < 0 ? 0 : red.x();
-    var g = red.y() > 1.0 ? 1.0 : red.y() < 0 ? 0 : red.y();
-    var b = red.z() > 1.0 ? 1.0 : red.z() < 0 ? 0 : red.z();
+    var r = pixelColor.x() > 1.0 ? 1.0 : pixelColor.x() < 0 ? 0 : pixelColor.x();
+    var g = pixelColor.y() > 1.0 ? 1.0 : pixelColor.y() < 0 ? 0 : pixelColor.y();
+    var b = pixelColor.z() > 1.0 ? 1.0 : pixelColor.z() < 0 ? 0 : pixelColor.z();
 
-    color = new Color(r, g, b, 1.0);
+    var color = new Color(mapDoubleTo255(r), mapDoubleTo255(g), mapDoubleTo255(b));
+
     c.setColor(x, y, color);
   }
 
-  @Then("pixel_at\\({word}, {int}, {int}) = red")
-  public void pixel_atCRed(String filename, int x, int y) throws IOException {
+  public static int mapDoubleTo255(double value) {
+    if (value < 0.0) {
+      return 0;
+    } else if (value > 1.0) {
+      return 255;
+    } else {
+      return (int) Math.ceil(value * 255);
+    }
+  }
+
+  @Then("pixel_at\\({word}, {int}, {int}) = {word}")
+  public void pixel_atCRed(String filename, int x, int y, String colorName) throws IOException {
+    var red = (Tuple) ObjectCache.get(colorName);
+
     var image = PPM.read(filename + ".ppm");
 
     var pixelColor = image.getColor(x, y);
 
-    assertEquals(color.getRed(), pixelColor.getRed());
-    assertEquals(color.getGreen(), pixelColor.getGreen());
-    assertEquals(color.getBlue(), pixelColor.getBlue());
+    assertEquals(mapDoubleTo255(red.x()), pixelColor.getRed());
+    assertEquals(mapDoubleTo255(red.y()), pixelColor.getGreen());
+    assertEquals(mapDoubleTo255(red.z()), pixelColor.getBlue());
   }
 
   @When("ppm ← canvas_to_ppm\\({word})")
@@ -93,7 +105,7 @@ public class CanvasStepDefinitions {
 
   @When("every pixel of {word} is set to color\\({double}, {double}, {double})")
   public void everyPixelOfCIsSetToColor(String filename, double red, double green, double blue) throws IOException {
-    var color = new Color(red, green, blue, 1);
+    var color = new Color(mapDoubleTo255(red), mapDoubleTo255(green), mapDoubleTo255(blue));
 
     for (int y = 0; y < c.getHeight(); y++) {
       for (int x = 0; x < c.getWidth(); x++) {
