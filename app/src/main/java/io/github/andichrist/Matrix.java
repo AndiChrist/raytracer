@@ -222,7 +222,7 @@ public record Matrix(double[][] matrix) {
     }
 
 
-    public static Matrix shearing(int xy, int xz, int yx, int yz, int zx, int zy) {
+    public static Matrix shear(int xy, int xz, int yx, int yz, int zx, int zy) {
         return new Matrix(new double[][]{
             {1, xy, xz, 0},
             {yx, 1, yz, 0},
