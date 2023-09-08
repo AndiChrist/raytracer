@@ -8,7 +8,6 @@ import io.github.andichrist.gfx.PPM;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -34,11 +33,11 @@ public class CanvasStepDefinitions {
 
   @And("every pixel of c is color\\({int}, {int}, {int})")
   public void everyPixelOfCIsColor(int red, int green, int blue) {
-    Color color = new Color(red, green, blue, 1);
+    var color = new Color(red, green, blue, 1);
 
     for (int y = 0; y < c.getHeight(); y++) {
       for (int x = 0; x < c.getWidth(); x++) {
-        Color pixelColor = c.getColor(x, y);
+        var pixelColor = c.getColor(x, y);
 
         assertEquals(color.getRed(), pixelColor.getRed());
         assertEquals(color.getGreen(), pixelColor.getGreen());
@@ -54,11 +53,11 @@ public class CanvasStepDefinitions {
 */
   @When("write_pixel\\(c, {int}, {int}, {word})")
   public void write_pixelCRed(int x, int y, String colorName) {
-    Tuple red = (Tuple) ObjectCache.get(colorName);
+    var red = (Tuple) ObjectCache.get(colorName);
 
-    double r = red.x() > 1.0 ? 1.0 : red.x() < 0 ? 0 : red.x();
-    double g = red.y() > 1.0 ? 1.0 : red.y() < 0 ? 0 : red.y();
-    double b = red.z() > 1.0 ? 1.0 : red.z() < 0 ? 0 : red.z();
+    var r = red.x() > 1.0 ? 1.0 : red.x() < 0 ? 0 : red.x();
+    var g = red.y() > 1.0 ? 1.0 : red.y() < 0 ? 0 : red.y();
+    var b = red.z() > 1.0 ? 1.0 : red.z() < 0 ? 0 : red.z();
 
     color = new Color(r, g, b, 1.0);
     c.setColor(x, y, color);
@@ -66,9 +65,9 @@ public class CanvasStepDefinitions {
 
   @Then("pixel_at\\({word}, {int}, {int}) = red")
   public void pixel_atCRed(String filename, int x, int y) throws IOException {
-    Canvas image = PPM.read(filename + ".ppm");
+    var image = PPM.read(filename + ".ppm");
 
-    Color pixelColor = image.getColor(x, y);
+    var pixelColor = image.getColor(x, y);
 
     assertEquals(color.getRed(), pixelColor.getRed());
     assertEquals(color.getGreen(), pixelColor.getGreen());
@@ -83,9 +82,9 @@ public class CanvasStepDefinitions {
 
   @Then("lines {int}-{int} of {word} are:")
   public void linesOfPpmAre(int arg0, int arg1, String filename, String text) throws IOException {
-    final String[] lines = text.split("\n");
+    var lines = text.split("\n");
 
-    List<String> result = PPM.readPPM("c.ppm");
+    var result = PPM.readPPM("c.ppm");
     for (int i = 0; i < lines.length; i++) {
       assertEquals(result.get(i + arg0 - 1).replace("  ", " ").trim(), lines[i]);
     }
@@ -94,7 +93,7 @@ public class CanvasStepDefinitions {
 
   @When("every pixel of {word} is set to color\\({double}, {double}, {double})")
   public void everyPixelOfCIsSetToColor(String filename, double red, double green, double blue) throws IOException {
-    Color color = new Color(red, green, blue, 1);
+    var color = new Color(red, green, blue, 1);
 
     for (int y = 0; y < c.getHeight(); y++) {
       for (int x = 0; x < c.getWidth(); x++) {
@@ -105,7 +104,7 @@ public class CanvasStepDefinitions {
 
   @Then("ppm ends with a newline character")
   public void ppmEndsWithANewlineCharacter() throws IOException {
-    List<String> result = PPM.readPPM("c.ppm");
+    var result = PPM.readPPM("c.ppm");
     assertEquals("", result.get(result.size()-1));
   }
 }
