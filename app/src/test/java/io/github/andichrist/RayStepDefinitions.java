@@ -5,6 +5,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import static io.github.andichrist.Ray.intersect;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RayStepDefinitions {
@@ -66,7 +67,7 @@ public class RayStepDefinitions {
     var s = (Sphere) ObjectCache.get(sphereName + 1);
     var r = (Ray) ObjectCache.get(rayName);
 
-    var xs = Ray.intersect(s, r);
+    var xs = intersect(s, r);
 
     ObjectCache.set(intersectsName, xs);
   }
