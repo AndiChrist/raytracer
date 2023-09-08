@@ -43,8 +43,7 @@ public record Tuple(double x, double y, double z, double w) {
     return new Tuple(
         x + tuple.x(),
         y + tuple.y(),
-        z + tuple.z(),
-        w + tuple.w()
+        z + tuple.z()
     );
   }
 
@@ -52,8 +51,7 @@ public record Tuple(double x, double y, double z, double w) {
     return new Tuple(
         x - tuple.x(),
         y - tuple.y(),
-        z - tuple.z(),
-        w - tuple.w()
+        z - tuple.z()
     );
   }
 
@@ -61,8 +59,7 @@ public record Tuple(double x, double y, double z, double w) {
     return new Tuple(
         x * factor,
         y * factor,
-        z * factor,
-        w * factor
+        z * factor
     );
   }
 
@@ -70,8 +67,7 @@ public record Tuple(double x, double y, double z, double w) {
     return new Tuple(
         x * tuple.x,
         y * tuple.y,
-        z * tuple.z,
-        w * tuple.w
+        z * tuple.z
     );
   }
 
@@ -79,8 +75,7 @@ public record Tuple(double x, double y, double z, double w) {
     return new Tuple(
         x / value,
         y / value,
-        z / value,
-        w / value
+        z / value
     );
   }
 
