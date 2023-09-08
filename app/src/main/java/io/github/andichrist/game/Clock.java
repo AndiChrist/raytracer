@@ -4,8 +4,8 @@ import io.github.andichrist.Canvas;
 import io.github.andichrist.Matrix;
 import io.github.andichrist.Tuple;
 import io.github.andichrist.gfx.PPM;
-import javafx.scene.paint.Color;
 
+import java.awt.*;
 import java.io.IOException;
 
 public interface Clock {

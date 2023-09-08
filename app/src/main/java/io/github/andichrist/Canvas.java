@@ -1,7 +1,7 @@
 package io.github.andichrist;
 
+import java.awt.*;
 import java.util.Arrays;
-import javafx.scene.paint.Color;
 
 public class Canvas {
 

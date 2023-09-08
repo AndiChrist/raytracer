@@ -1,9 +1,6 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'java'
-
-    // https://mvnrepository.com/artifact/org.openjfx/javafx-plugin
-    id 'org.openjfx.javafxplugin' version '0.0.14'
 }
 
 repositories {
@@ -15,11 +12,6 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(20)
     }
-}
-
-// JavaFX Plugin
-javafx {
-    modules = [ 'javafx.base', 'javafx.graphics', 'javafx.swing' ]
 }
 
 dependencies {

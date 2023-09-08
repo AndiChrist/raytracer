@@ -1,25 +1,16 @@
 package io.github.andichrist.gfx;
 
 import io.github.andichrist.Canvas;
-import java.io.BufferedReader;
+
+import java.awt.*;
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
-import javafx.scene.paint.Color;
 
 public class PPM {
 
@@ -41,9 +32,9 @@ public class PPM {
       for(int column = 0; column < width; column++) {
         Color color = image.getColor(column, row);
 
-        writer.write((int) Math.round(color.getRed() * 255.0) + " ");
-        writer.write((int) Math.round(color.getGreen() * 255.0) + " ");
-        writer.write((int) Math.round(color.getBlue() * 255.0) + " ");
+        writer.write(color.getRed() + " ");
+        writer.write(color.getGreen() + " ");
+        writer.write( color.getBlue() + " ");
 
         if(column < width - 1)
           writer.write(" ");
@@ -73,7 +64,7 @@ public class PPM {
       for (String pixel : pixels) {
         final int[] rgb = Arrays.stream(pixel.split(" ")).mapToInt(Integer::parseInt).toArray();
 
-        Color color = new Color(rgb[0]/255, rgb[1]/255, rgb[2]/255, 1.0);
+        Color color = new Color(rgb[0], rgb[1], rgb[2]);
 
         image.setColor(col++, row, color);
       }
