@@ -19,19 +19,19 @@ public record Tuple(double x, double y, double z, double w) {
   }
 
   public Tuple asPoint() {
-    return newPoint(x, y, z);
+    return point(x, y, z);
   }
   public Tuple asVector() {
-    return newVector(x, y, z);
+    return vector(x, y, z);
   }
 
-  public static Tuple newPoint(double x, double y, double z) {
+  public static Tuple point(double x, double y, double z) {
     return new Tuple(x, y, z, POINT);
   }
-  public static Tuple newVector(double x, double y, double z) {
+  public static Tuple vector(double x, double y, double z) {
     return new Tuple(x, y, z, VECTOR);
   }
-  public static Tuple newColor(double x, double y, double z) {
+  public static Tuple color(double x, double y, double z) {
     return new Tuple(x, y, z, VECTOR);
   }
 

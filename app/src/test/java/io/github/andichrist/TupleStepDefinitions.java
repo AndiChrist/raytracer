@@ -81,19 +81,19 @@ public class TupleStepDefinitions {
 
   @Given("{word} ← point\\({double}, {double}, {double})")
   public void pPoint(String name, double x, double y, double z) {
-    Tuple point = Tuple.newPoint(x, y, z);
+    Tuple point = Tuple.point(x, y, z);
     ObjectCache.set(name, point);
   }
 
   @Given("{word} ← vector\\({double}, {double}, {double})")
   public void vVector(String name, double x, double y, double z) {
-    Tuple vector = Tuple.newVector(x, y, z);
+    Tuple vector = Tuple.vector(x, y, z);
     ObjectCache.set(name, vector);
   }
 
   @Then("{word} - {word} = vector\\({double}, {double}, {double})")
   public void pPVector(String name1, String name2, double x, double y, double z) {
-    Tuple expected = Tuple.newVector(x, y, z);
+    Tuple expected = Tuple.vector(x, y, z);
 
     Tuple obj1 = (Tuple) ObjectCache.get(name1);
     Tuple obj2 = (Tuple) ObjectCache.get(name2);
@@ -131,7 +131,7 @@ public class TupleStepDefinitions {
 
   @Then("{word} - {word} = point\\({double}, {double}, {double})")
   public void subtractVector(String name0, String name1, double x, double y, double z) {
-    Tuple expected = Tuple.newPoint(x, y, z);
+    Tuple expected = Tuple.point(x, y, z);
 
     Tuple p = (Tuple) ObjectCache.get(name0);
     Tuple v = (Tuple) ObjectCache.get(name1);
@@ -202,7 +202,7 @@ public class TupleStepDefinitions {
 
   @Then("normalize\\({word}) = vector\\({double}, {double}, {double})")
   public void normalizeVVector(String name, double x, double y, double z) {
-    Tuple expected = Tuple.newVector(x, y, z);
+    Tuple expected = Tuple.vector(x, y, z);
 
     Tuple v = (Tuple) ObjectCache.get(name);
     Tuple actual = v.normalize();
@@ -212,7 +212,7 @@ public class TupleStepDefinitions {
 
   @Then("normalize\\({word}) = approximately vector\\({double}, {double}, {double})")
   public void normalizeVApproximatelyVector(String name, double x, double y, double z) {
-    Tuple expected = Tuple.newVector(x, y, z);
+    Tuple expected = Tuple.vector(x, y, z);
 
     Tuple v = (Tuple) ObjectCache.get(name);
     Tuple actual = v.normalize();
@@ -242,7 +242,7 @@ public class TupleStepDefinitions {
 
   @Then("cross\\({word}, {word}) = vector\\({double}, {double}, {double})")
   public void crossABVector(String arg0, String arg1, double x, double y, double z) {
-    Tuple expected = Tuple.newVector(x, y, z);
+    Tuple expected = Tuple.vector(x, y, z);
 
     Tuple a = (Tuple) ObjectCache.get(arg0);
     Tuple b = (Tuple) ObjectCache.get(arg1);
@@ -254,14 +254,14 @@ public class TupleStepDefinitions {
 
   @Given("{word} ← color\\({double}, {double}, {double})")
   public void color(String name, double x, double y, double z) {
-    Tuple color = Tuple.newColor(x, y, z);
+    Tuple color = Tuple.color(x, y, z);
     ObjectCache.set(name, color);
   }
 
 
   @Then("{word} + {word} = color\\({double}, {double}, {double})")
   public void cPlusColor(String name1, String name2, double red, double green, double blue) {
-    Tuple expected =  Tuple.newColor(red, green, blue);
+    Tuple expected =  Tuple.color(red, green, blue);
 
     Tuple a = (Tuple) ObjectCache.get(name1);
     Tuple b = (Tuple) ObjectCache.get(name2);
@@ -273,7 +273,7 @@ public class TupleStepDefinitions {
 
   @Then("{word} - {word} = color\\({double}, {double}, {double})")
   public void cMinusColor(String name1, String name2, double red, double green, double blue) {
-    Tuple expected =  Tuple.newColor(red, green, blue);
+    Tuple expected =  Tuple.color(red, green, blue);
 
     Tuple a = (Tuple) ObjectCache.get(name1);
     Tuple b = (Tuple) ObjectCache.get(name2);
@@ -298,7 +298,7 @@ public class TupleStepDefinitions {
   // avoid "undefined step reference"
   @Then("{word} * {word} = color\\({double}, {double}, {double})")
   public void cMultColor(String name1, String name2, double red, double green, double blue) {
-    Tuple expected = Tuple.newColor(red, green, blue);
+    Tuple expected = Tuple.color(red, green, blue);
 
     Tuple a = (Tuple) ObjectCache.get(name1);
     Tuple b = (Tuple) ObjectCache.get(name2);

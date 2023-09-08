@@ -7,22 +7,22 @@ import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
-public class Game2 {
-  public static void main(String[] args) throws IOException {
+public interface Game2 {
+  static void main(String[] args) throws IOException {
 
-    var start = Tuple.newPoint(0, 1, 0);
+    var start = Tuple.point(0, 1, 0);
 
     // projectile starts one unit above the origin.
     // velocity is normalized to 1 unit/tick.
-    var a = Tuple.newVector(1,1.8,0).normalize();
+    var a = Tuple.vector(1,1.8,0).normalize();
     var velocity = a.multiply(11.25);
 
     var projectile = new Projectile(start, velocity);
 
     // gravity -0.1 unit/tick, and wind is -0.01 unit/tick.
     // e ← environment(vector(0, -0.1, 0), vector(-0.01, 0, 0))“
-    var gravity = Tuple.newVector(0, -0.1, 0);
-    var wind = Tuple.newVector(-0.01, 0, 0);
+    var gravity = Tuple.vector(0, -0.1, 0);
+    var wind = Tuple.vector(-0.01, 0, 0);
     var environment = new Environment(gravity, wind);
 
     var c = new Canvas(900, 550);

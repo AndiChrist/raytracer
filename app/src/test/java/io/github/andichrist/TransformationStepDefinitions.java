@@ -21,7 +21,7 @@ public class TransformationStepDefinitions {
     Matrix transform = (Matrix) ObjectCache.get("transform");
     Tuple point = (Tuple) ObjectCache.get(pointName);
 
-    Tuple expectedPoint = Tuple.newPoint(x, y, z);
+    Tuple expectedPoint = Tuple.point(x, y, z);
 
     Tuple actual = transform.multiply(point);
 
@@ -33,7 +33,7 @@ public class TransformationStepDefinitions {
     Matrix transform = (Matrix) ObjectCache.get("inv");
     Tuple point = (Tuple) ObjectCache.get(pointName);
 
-    Tuple expectedPoint = Tuple.newPoint(x, y, z);
+    Tuple expectedPoint = Tuple.point(x, y, z);
 
     Tuple actual = transform.multiply(point);
 
@@ -62,7 +62,7 @@ public class TransformationStepDefinitions {
   public void transformVVector(String matrixName, String vectorName, int x, int y, int z) {
     Matrix matrix = (Matrix) ObjectCache.get(matrixName);
     Tuple vector = (Tuple) ObjectCache.get(vectorName);
-    Tuple actual = Tuple.newVector(x, y, z);
+    Tuple actual = Tuple.vector(x, y, z);
 
     Tuple expected = matrix.multiply(vector);
 
@@ -74,7 +74,7 @@ public class TransformationStepDefinitions {
     Matrix matrix = (Matrix) ObjectCache.get("half_quarter");
     Tuple p = (Tuple) ObjectCache.get(pointName);
 
-    Tuple expected = Tuple.newPoint(x, y, z);
+    Tuple expected = Tuple.point(x, y, z);
     Tuple actual = matrix.multiply(p);
 
     assertEquals(expected, actual);
@@ -85,7 +85,7 @@ public class TransformationStepDefinitions {
     Matrix matrix = (Matrix) ObjectCache.get("full_quarter");
     Tuple p = (Tuple) ObjectCache.get(pointName);
 
-    Tuple expected = Tuple.newPoint(x, y, z);
+    Tuple expected = Tuple.point(x, y, z);
     Tuple actual = matrix.multiply(p);
 
     assertEquals(expected, actual);
@@ -132,7 +132,7 @@ public class TransformationStepDefinitions {
   @Then("{word} = point\\({double}, {double}, {double})")
   public void p2_point(String pointName, double x, double y, double z) {
     Tuple actual = (Tuple) ObjectCache.get(pointName);
-    Tuple expected = Tuple.newPoint(x, y, z);
+    Tuple expected = Tuple.point(x, y, z);
 
     assertEquals(expected, actual);
   }
@@ -154,7 +154,7 @@ public class TransformationStepDefinitions {
     Matrix transform = (Matrix) ObjectCache.get("T");
     Tuple point = (Tuple) ObjectCache.get(pointName);
 
-    Tuple expected = Tuple.newPoint(x, y, z);
+    Tuple expected = Tuple.point(x, y, z);
     Tuple actual = transform.multiply(point);
 
     assertEquals(expected, actual);
