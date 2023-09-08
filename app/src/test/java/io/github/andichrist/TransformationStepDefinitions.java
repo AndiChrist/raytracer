@@ -11,7 +11,7 @@ public class TransformationStepDefinitions {
 
   @Given("{word} ← translation\\({int}, {int}, {int})")
   public void transformTranslation(String transformName, int x, int y, int z) {
-    Matrix translationMatrix = Matrix.identityMatrix().translation(x, y, z);
+    Matrix translationMatrix = Matrix.identity().translate(x, y, z);
 
     ObjectCache.set(transformName, translationMatrix);
   }
@@ -53,7 +53,7 @@ public class TransformationStepDefinitions {
 
   @Given("{word} ← scaling\\({int}, {int}, {int})")
   public void transformScaling(String transformName, int x, int y, int z) {
-    Matrix translationMatrix = Matrix.identityMatrix().scaling(x, y, z);
+    Matrix translationMatrix = Matrix.identity().scale(x, y, z);
 
     ObjectCache.set(transformName, translationMatrix);
   }
@@ -93,21 +93,21 @@ public class TransformationStepDefinitions {
 
   @And("{word} ← rotation_x\\({double})")
   public void rotation_x(String matrixName, double value) {
-    Matrix matrix = Matrix.rotation_x(value);
+    Matrix matrix = Matrix.rotate_x(value);
 
     ObjectCache.set(matrixName, matrix);
   }
 
   @And("{word} ← rotation_y\\({double})")
   public void rotation_y(String matrixName, double value) {
-    Matrix matrix = Matrix.rotation_y(value);
+    Matrix matrix = Matrix.rotate_y(value);
 
     ObjectCache.set(matrixName, matrix);
   }
 
   @And("{word} ← rotation_z\\({double})")
   public void rotation_z(String matrixName, double value) {
-    Matrix matrix = Matrix.rotation_z(value);
+    Matrix matrix = Matrix.rotate_z(value);
 
     ObjectCache.set(matrixName, matrix);
   }

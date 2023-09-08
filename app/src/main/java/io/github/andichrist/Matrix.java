@@ -178,7 +178,7 @@ public record Matrix(double[][] matrix) {
     }
 
 
-    public Matrix translation(int x, int y, int z) {
+    public Matrix translate(int x, int y, int z) {
         matrix[0][3] = x;
         matrix[1][3] = y;
         matrix[2][3] = z;
@@ -186,7 +186,7 @@ public record Matrix(double[][] matrix) {
         return new Matrix(matrix);
     }
 
-    public Matrix scaling(int x, int y, int z) {
+    public Matrix scale(int x, int y, int z) {
         matrix[0][0] = x;
         matrix[1][1] = y;
         matrix[2][2] = z;
@@ -194,7 +194,7 @@ public record Matrix(double[][] matrix) {
         return new Matrix(matrix);
     }
 
-    public static Matrix rotation_x(double r) {
+    public static Matrix rotate_x(double r) {
         return new Matrix(new double[][]{
             {1, 0, 0, 0},
             {0, Math.cos(r), -Math.sin(r), 0},
@@ -203,7 +203,7 @@ public record Matrix(double[][] matrix) {
         });
     }
 
-    public static Matrix rotation_y(double r) {
+    public static Matrix rotate_y(double r) {
         return new Matrix(new double[][]{
             {Math.cos(r), 0, Math.sin(r), 0},
             {0, 1, 0, 0},
@@ -212,7 +212,7 @@ public record Matrix(double[][] matrix) {
         });
     }
 
-    public static Matrix rotation_z(double r) {
+    public static Matrix rotate_z(double r) {
         return new Matrix(new double[][]{
             {Math.cos(r), -Math.sin(r), 0, 0},
             {Math.sin(r), Math.cos(r), 0, 0},
@@ -261,7 +261,7 @@ public record Matrix(double[][] matrix) {
         }
     }
 
-    public static Matrix identityMatrix() {
+    public static Matrix identity() {
         double[][] iMatrix = new double[4][4];
         for (int i = 0; i < 4; i++) {
             iMatrix[i][i] = 1;

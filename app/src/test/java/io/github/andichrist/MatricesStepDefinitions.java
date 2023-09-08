@@ -73,7 +73,7 @@ public class MatricesStepDefinitions {
         Matrix matrix = (Matrix) ObjectCache.get(matrixA);
         Matrix expected = (Matrix) ObjectCache.get(matrixB);
 
-        Matrix actual = matrix.multiply(Matrix.identityMatrix());
+        Matrix actual = matrix.multiply(Matrix.identity());
 
         assertEquals(expected, actual);
     }
@@ -83,7 +83,7 @@ public class MatricesStepDefinitions {
         Tuple tuple = (Tuple) ObjectCache.get(tupleNameA);
         Tuple expected = (Tuple) ObjectCache.get(tupleNameB);
 
-        Tuple actual = Matrix.identityMatrix().multiply(tuple);
+        Tuple actual = Matrix.identity().multiply(tuple);
 
         assertEquals(expected, actual);
     }
@@ -101,7 +101,7 @@ public class MatricesStepDefinitions {
 
     @Given("{word} ← transpose\\(identity_matrix)")
     public void aTransposeIdentity_matrix(String matrixName) {
-        Matrix matrix = Matrix.identityMatrix().transpose();
+        Matrix matrix = Matrix.identity().transpose();
         ObjectCache.set(matrixName, matrix);
     }
 
@@ -109,7 +109,7 @@ public class MatricesStepDefinitions {
     public void aIdentity_matrix(String matrixName) {
         Matrix identity_matrix = (Matrix) ObjectCache.get(matrixName);
 
-        assertEquals(identity_matrix, Matrix.identityMatrix());
+        assertEquals(identity_matrix, Matrix.identity());
     }
 
     @Then("determinant\\({word}) = {int}")
