@@ -143,4 +143,14 @@ public record Tuple(double x, double y, double z, double w) {
         && Math.abs(tuple.y - y) < epsilon
         && Math.abs(tuple.z - z) < epsilon;
   }
+
+  @Override
+  public String toString() {
+    if (this.isPoint())
+      return "Point[x=" + x + ", y=" + y + ", z=" + z + "]";
+    else if (this.isVector())
+      return "Vector[x=" + x + ", y=" + y + ", z=" + z + "]";
+    else
+      return "Tuple[x=" + x + ", y=" + y + ", z=" + z + ", w=" + w + "]";
+  }
 }
