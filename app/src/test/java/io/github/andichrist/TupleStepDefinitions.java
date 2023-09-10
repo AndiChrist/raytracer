@@ -19,63 +19,63 @@ public class TupleStepDefinitions {
   @Then("{word}.red = {double}")
   @Then("{word}.x = {double}")
   public void getX(String name, double value) {
-    var tuple = (Tuple) ObjectCache.get(name);
+    var tuple = ObjectCache.getTuple(name);
     assertEquals(tuple.x(), value, 0.1);
   }
 
   @Then("{word}.green = {double}")
   @Then("{word}.y = {double}")
   public void getY(String name, double value) {
-    var tuple = (Tuple) ObjectCache.get(name);
+    var tuple = ObjectCache.getTuple(name);
     assertEquals(tuple.y(), value, 0.1);
   }
 
   @Then("{word}.blue = {double}")
   @Then("{word}.z = {double}")
   public void getZ(String name, double value) {
-    var tuple = (Tuple) ObjectCache.get(name);
+    var tuple = ObjectCache.getTuple(name);
     assertEquals(tuple.z(), value, 0.1);
   }
 
   @Then("{word}.w = {double}")
   public void getW(String name, double value) {
-    var tuple = (Tuple) ObjectCache.get(name);
+    var tuple = ObjectCache.getTuple(name);
     assertEquals(tuple.w(), value, 0.1);
   }
 
   @And("{word} is a point")
   public void aIsAPoint(String name) {
-    var tuple = (Tuple) ObjectCache.get(name);
+    var tuple = ObjectCache.getPoint(name);
     assertEquals(tuple.w(), Tuple.POINT, 0.1);
   }
 
   @And("{word} is not a point")
   public void aIsNotAPoint(String name) {
-    var tuple = (Tuple) ObjectCache.get(name);
+    var tuple = ObjectCache.getVector(name);
     assertEquals(tuple.w(), Tuple.VECTOR, 0.1);
   }
 
   @And("{word} is a vector")
   public void aIsAVector(String name) {
-    var tuple = (Tuple) ObjectCache.get(name);
+    var tuple = ObjectCache.getTuple(name);
     assertEquals(tuple.w(), 0.0, 0.1);
   }
 
   @And("{word} is not a vector")
   public void aIsNotAVector(String name) {
-    var tuple = (Tuple) ObjectCache.get(name);
+    var tuple = ObjectCache.getTuple(name);
     assertEquals(tuple.w(), 1.0, 0.1);
   }
 
   @Then("{word} + {word} = tuple\\({double}, {double}, {double}, {double})")
   public void aATuple(String name1, String name2, double x, double y, double z, double w) {
-    var tuple1 = (Tuple) ObjectCache.get(name1);
-    var tuple2 = (Tuple) ObjectCache.get(name2);
+    var tuple1 = ObjectCache.getTuple(name1);
+    var tuple2 = ObjectCache.getTuple(name2);
 
     var t = new Tuple(x, y, z, w);
     ObjectCache.set("expected", t);
 
-    var expected = (Tuple) ObjectCache.get("expected");
+    var expected = ObjectCache.getTuple("expected");
     var actual = tuple1.add(tuple2);
 
     assertEquals(expected, actual);
@@ -97,8 +97,8 @@ public class TupleStepDefinitions {
   public void pPVector(String name1, String name2, double x, double y, double z) {
     var expected = Tuple.vector(x, y, z);
 
-    var obj1 = (Tuple) ObjectCache.get(name1);
-    var obj2 = (Tuple) ObjectCache.get(name2);
+    var obj1 = ObjectCache.getTuple(name1);
+    var obj2 = ObjectCache.getTuple(name2);
 
     // TODO correct this
     Tuple p1 = null;
@@ -135,8 +135,8 @@ public class TupleStepDefinitions {
   public void subtractVector(String name0, String name1, double x, double y, double z) {
     var expected = Tuple.point(x, y, z);
 
-    var point = (Tuple) ObjectCache.get(name0);
-    var vector = (Tuple) ObjectCache.get(name1);
+    var point = ObjectCache.getPoint(name0);
+    var vector = ObjectCache.getVector(name1);
 
     var actual = point.subtract(vector);
 
@@ -148,8 +148,8 @@ public class TupleStepDefinitions {
     var t = new Tuple(x, y, z, w);
     ObjectCache.set(name, t);
 
-    var a = (Tuple) ObjectCache.get("a");
-    var b = (Tuple) ObjectCache.get(name);
+    var a = ObjectCache.getTuple("a");
+    var b = ObjectCache.getTuple(name);
 
     var actual = a.add(b);
 
@@ -162,8 +162,8 @@ public class TupleStepDefinitions {
     var t = new Tuple(x, y, z, w);
     ObjectCache.set("expected", t);
 
-    var a = (Tuple) ObjectCache.get(name);
-    var expected = (Tuple) ObjectCache.get("expected");
+    var a = ObjectCache.getTuple(name);
+    var expected = ObjectCache.getTuple("expected");
 
     var actual = a.multiply(value);
 
@@ -175,8 +175,8 @@ public class TupleStepDefinitions {
     var t = new Tuple(x, y, z, w);
     ObjectCache.set("expected", t);
 
-    var a = (Tuple) ObjectCache.get(name);
-    var expected = (Tuple) ObjectCache.get("expected");
+    var a = ObjectCache.getTuple(name);
+    var expected = ObjectCache.getTuple("expected");
 
     var actual = a.divide(arg0);
 
@@ -185,7 +185,7 @@ public class TupleStepDefinitions {
 
   @Then("magnitude\\({word}) = {double}")
   public void magnitudeV(String name, double expected) {
-    var v = (Tuple) ObjectCache.get(name);
+    var v = ObjectCache.getTuple(name);
 
     var actual = v.magnitude();
 
@@ -194,7 +194,7 @@ public class TupleStepDefinitions {
 
   @Then("magnitude\\({word}) = √{double}")
   public void magnitudeV2(String name, double value) {
-    var v = (Tuple) ObjectCache.get(name);
+    var v = ObjectCache.getTuple(name);
 
     var expected = Math.sqrt(value);
     var actual = v.magnitude();
@@ -206,7 +206,7 @@ public class TupleStepDefinitions {
   public void normalizeVVector(String name, double x, double y, double z) {
     var expected = Tuple.vector(x, y, z);
 
-    var v = (Tuple) ObjectCache.get(name);
+    var v = ObjectCache.getTuple(name);
     var actual = v.normalize();
 
     assertEquals(expected, actual);
@@ -216,7 +216,7 @@ public class TupleStepDefinitions {
   public void normalizeVApproximatelyVector(String name, double x, double y, double z) {
     var expected = Tuple.vector(x, y, z);
 
-    var v = (Tuple) ObjectCache.get(name);
+    var v = ObjectCache.getTuple(name);
     var actual = v.normalize();
 
     assertEquals(expected.x(), actual.x(), 0.00001);
@@ -226,7 +226,7 @@ public class TupleStepDefinitions {
 
   @When("{word} ← normalize\\({word})")
   public void normNormalizeV(String norm, String name) {
-    var v = (Tuple) ObjectCache.get(name);
+    var v = ObjectCache.getTuple(name);
     var actual = v.normalize();
 
     ObjectCache.set(norm, actual);
@@ -234,8 +234,8 @@ public class TupleStepDefinitions {
 
   @Then("dot\\({word}, {word}) = {double}")
   public void dotAB(String arg0, String arg1, double expected) {
-    var v1 = (Tuple) ObjectCache.get(arg0);
-    var v2 = (Tuple) ObjectCache.get(arg1);
+    var v1 = ObjectCache.getTuple(arg0);
+    var v2 = ObjectCache.getTuple(arg1);
 
     var actual = v1.dot(v2);
 
@@ -246,8 +246,8 @@ public class TupleStepDefinitions {
   public void crossABVector(String arg0, String arg1, double x, double y, double z) {
     var expected = Tuple.vector(x, y, z);
 
-    var a = (Tuple) ObjectCache.get(arg0);
-    var b = (Tuple) ObjectCache.get(arg1);
+    var a = ObjectCache.getTuple(arg0);
+    var b = ObjectCache.getTuple(arg1);
 
     var actual = a.cross(b);
 
@@ -265,8 +265,8 @@ public class TupleStepDefinitions {
   public void cPlusColor(String name1, String name2, double red, double green, double blue) {
     var expected =  Tuple.color(red, green, blue);
 
-    var a = (Tuple) ObjectCache.get(name1);
-    var b = (Tuple) ObjectCache.get(name2);
+    var a = ObjectCache.getTuple(name1);
+    var b = ObjectCache.getTuple(name2);
 
     var actual = a.add(b);
 
@@ -277,8 +277,8 @@ public class TupleStepDefinitions {
   public void cMinusColor(String name1, String name2, double red, double green, double blue) {
     var expected =  Tuple.color(red, green, blue);
 
-    var a = (Tuple) ObjectCache.get(name1);
-    var b = (Tuple) ObjectCache.get(name2);
+    var a = ObjectCache.getTuple(name1);
+    var b = ObjectCache.getTuple(name2);
 
     var actual = a.subtract(b);
 
@@ -302,8 +302,8 @@ public class TupleStepDefinitions {
   public void cMultColor(String name1, String name2, double red, double green, double blue) {
     var expected = Tuple.color(red, green, blue);
 
-    var a = (Tuple) ObjectCache.get(name1);
-    var b = (Tuple) ObjectCache.get(name2);
+    var a = ObjectCache.getTuple(name1);
+    var b = ObjectCache.getTuple(name2);
     Tuple actual;
 
     if (b != null) {

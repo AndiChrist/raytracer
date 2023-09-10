@@ -52,7 +52,7 @@ public class CanvasStepDefinitions {
 */
   @When("write_pixel\\(c, {int}, {int}, {word})")
   public void write_pixelCRed(int x, int y, String colorName) {
-    var pixelColor = (Tuple) ObjectCache.get(colorName);
+    var pixelColor = ObjectCache.getColor(colorName);
 
     var r = pixelColor.x() > 1.0 ? 1.0 : pixelColor.x() < 0 ? 0 : pixelColor.x();
     var g = pixelColor.y() > 1.0 ? 1.0 : pixelColor.y() < 0 ? 0 : pixelColor.y();
@@ -75,7 +75,7 @@ public class CanvasStepDefinitions {
 
   @Then("pixel_at\\({word}, {int}, {int}) = {word}")
   public void pixel_atCRed(String filename, int x, int y, String colorName) throws IOException {
-    var red = (Tuple) ObjectCache.get(colorName);
+    var red = ObjectCache.getColor(colorName);
 
     var image = PPM.read(filename + ".ppm");
 

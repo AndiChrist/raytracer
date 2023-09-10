@@ -23,15 +23,15 @@ public class MatricesStepDefinitions {
 
     @Then("{word}[{int},{int}] = {double}")
     public void checkMatrix(String name, int x, int y, double expected) {
-        var actual = ((Matrix) ObjectCache.get(name)).get(x, y);
+        var actual = ObjectCache.getMatrix(name).get(x, y);
 
         assertEquals(expected, actual);
     }
 
     @Then("{word} equals {word}")
     public void aEqualsB(String matrixNameA, String matrixNameB) {
-        var expected = (Matrix) ObjectCache.get(matrixNameA);
-        var actual = (Matrix) ObjectCache.get(matrixNameB);
+        var expected = ObjectCache.getMatrix(matrixNameA);
+        var actual = ObjectCache.getMatrix(matrixNameB);
 
         assertEquals(expected, actual);
     }
@@ -39,8 +39,8 @@ public class MatricesStepDefinitions {
 
     @Then("{word} not equals {word}")
     public void aNotEqualsB(String matrixNameA, String matrixNameB) {
-        var expected = (Matrix) ObjectCache.get(matrixNameA);
-        var actual = (Matrix) ObjectCache.get(matrixNameB);
+        var expected = ObjectCache.getMatrix(matrixNameA);
+        var actual = ObjectCache.getMatrix(matrixNameB);
 
         assertNotEquals(expected, actual);
     }
@@ -48,8 +48,8 @@ public class MatricesStepDefinitions {
 
     @Then("{word} * {word} is the following {int}x{int} matrix:")
     public void aBIsTheFollowingXMatrix(String matrixNameA, String matrixNameB, int x, int y, DataTable table) {
-        var A = (Matrix) ObjectCache.get(matrixNameA);
-        var B = (Matrix) ObjectCache.get(matrixNameB);
+        var A = ObjectCache.getMatrix(matrixNameA);
+        var B = ObjectCache.getMatrix(matrixNameB);
 
         var expected = new Matrix(table.asLists(Double.class));
         var actual = A.multiply(B);
@@ -61,8 +61,8 @@ public class MatricesStepDefinitions {
 
     @Then("{word} * {word} = tuple\\({int}, {int}, {int}, {int})")
     public void aBTuple(String matrixName, String tupleName, int x, int y, int z, int w) {
-        var matrix = (Matrix) ObjectCache.get(matrixName);
-        var tuple = (Tuple) ObjectCache.get(tupleName);
+        var matrix = ObjectCache.getMatrix(matrixName);
+        var tuple = ObjectCache.getTuple(tupleName);
 
         var expected = new Tuple(x, y, z, w);
         var actual = matrix.multiply(tuple);
@@ -73,8 +73,8 @@ public class MatricesStepDefinitions {
 
     @Then("{word} * identity_matrix = {word}")
     public void aIdentity_matrixA(String matrixA, String matrixB) {
-        var matrix = (Matrix) ObjectCache.get(matrixA);
-        var expected = (Matrix) ObjectCache.get(matrixB);
+        var matrix = ObjectCache.getMatrix(matrixA);
+        var expected = ObjectCache.getMatrix(matrixB);
 
         var actual = matrix.multiply(identity());
 
@@ -83,8 +83,8 @@ public class MatricesStepDefinitions {
 
     @Then("identity_matrix * {word} = {word}")
     public void identity_matrixAA(String tupleNameA, String tupleNameB) {
-        var tuple = (Tuple) ObjectCache.get(tupleNameA);
-        var expected = (Tuple) ObjectCache.get(tupleNameB);
+        var tuple = ObjectCache.getTuple(tupleNameA);
+        var expected = ObjectCache.getTuple(tupleNameB);
 
         var actual = identity().multiply(tuple);
 
@@ -93,7 +93,7 @@ public class MatricesStepDefinitions {
 
     @Then("transpose\\({word}) is the following matrix:")
     public void transposeAIsTheFollowingMatrix(String matrixName, DataTable table) {
-        var matrix = (Matrix) ObjectCache.get(matrixName);
+        var matrix = ObjectCache.getMatrix(matrixName);
         var actual = matrix.transpose();
 
         var expected = new Matrix(table.asLists(Double.class));
@@ -110,14 +110,14 @@ public class MatricesStepDefinitions {
 
     @Then("{word} = identity_matrix")
     public void aIdentity_matrix(String matrixName) {
-        var expected = (Matrix) ObjectCache.get(matrixName);
+        var expected = ObjectCache.getMatrix(matrixName);
 
         assertEquals(expected, identity());
     }
 
     @Then("determinant\\({word}) = {int}")
     public void determinantA(String matrixName, int actual) {
-        var matrix = (Matrix) ObjectCache.get(matrixName);
+        var matrix = ObjectCache.getMatrix(matrixName);
 
         var determinant = matrix.determinant();
 
@@ -126,7 +126,7 @@ public class MatricesStepDefinitions {
 
     @Then("submatrix\\({word}, {int}, {int}) is the following {int}x{int} matrix:")
     public void submatrixAIsTheFollowingXMatrix(String matrixName, int matrixX, int matrixY, int subX, int subY, DataTable table) {
-        var matrix = (Matrix) ObjectCache.get(matrixName);
+        var matrix = ObjectCache.getMatrix(matrixName);
         var expected = new Matrix(table.asLists(Double.class));
 
         var actual = matrix.subMatrix(matrixX, matrixY);
@@ -139,14 +139,14 @@ public class MatricesStepDefinitions {
 
     @And("{word} ← submatrix\\({word}, {int}, {int})")
     public void bSubmatrixA(String matrixNameB, String matrixNameA, int matrixX, int matrixY) {
-        var matrixA = (Matrix) ObjectCache.get(matrixNameA);
+        var matrixA = ObjectCache.getMatrix(matrixNameA);
         var matrixB = matrixA.subMatrix(matrixX, matrixY);
         ObjectCache.set(matrixNameB, matrixB);
     }
 
     @And("minor\\({word}, {int}, {int}) = {int}")
     public void minorA(String matrixName, int matrixX, int matrixY, int expected) {
-        var matrix = (Matrix) ObjectCache.get(matrixName);
+        var matrix = ObjectCache.getMatrix(matrixName);
 
         var actual = matrix.minor(matrixX, matrixY);
 
@@ -155,7 +155,7 @@ public class MatricesStepDefinitions {
 
     @And("cofactor\\({word}, {int}, {int}) = {int}")
     public void cofactorA(String matrixName, int matrixX, int matrixY, int expected) {
-        var matrix = (Matrix) ObjectCache.get(matrixName);
+        var matrix = ObjectCache.getMatrix(matrixName);
 
         var actual = matrix.cofactor(matrixX, matrixY);
 
@@ -164,7 +164,7 @@ public class MatricesStepDefinitions {
 
     @And("{word} is invertible")
     public void aIsInvertible(String matrixName) {
-        var matrix = (Matrix) ObjectCache.get(matrixName);
+        var matrix = ObjectCache.getMatrix(matrixName);
 
         assertTrue(matrix.isInvertible());
     }
@@ -172,14 +172,14 @@ public class MatricesStepDefinitions {
 
     @And("{word} is not invertible")
     public void aIsNotInvertible(String matrixName) {
-        var matrix = (Matrix) ObjectCache.get(matrixName);
+        var matrix = ObjectCache.getMatrix(matrixName);
 
         assertFalse(matrix.isInvertible());
     }
 
     @And("{word} ← inverse\\({word})")
     public void bInverseA(String matrixNameB, String matrixNameA) {
-        var matrixA = (Matrix) ObjectCache.get(matrixNameA);
+        var matrixA = ObjectCache.getMatrix(matrixNameA);
 
         var matrixB = matrixA.inverse();
 
@@ -188,7 +188,7 @@ public class MatricesStepDefinitions {
 
     @And("{word}[{int},{int}] = {int}\\/{int}")
     public void checkContent(String matrixName, int row, int col, int numerator, int denominator) {
-        var matrix = (Matrix) ObjectCache.get(matrixName);
+        var matrix = ObjectCache.getMatrix(matrixName);
 
         var expected = (double) numerator / denominator;
         var actual = matrix.get(row, col);
@@ -199,7 +199,7 @@ public class MatricesStepDefinitions {
 
     @And("^([A-Za-z]+) is the following (\\d+)x(\\d+) matrix:$")
     public void bIsTheFollowingXMatrix(String matrixName, int rows, int cols, DataTable table) {
-        var matrixActual = (Matrix) ObjectCache.get(matrixName);
+        var matrixActual = ObjectCache.getMatrix(matrixName);
         var matrixExpected = new Matrix(table.asLists(Double.class));
 
         assertEquals(rows, matrixActual.getWidth());
@@ -211,7 +211,7 @@ public class MatricesStepDefinitions {
 
     @And("^inverse\\(([A-Za-z]+)\\) is the following (\\d+)x(\\d+) matrix:$")
     public void inverseIsTheFollowingXMatrix(String matrixName, int rows, int cols, DataTable table) {
-        var matrixActual = (Matrix) ObjectCache.get(matrixName);
+        var matrixActual = ObjectCache.getMatrix(matrixName);
         var matrixExpected = new Matrix(table.asLists(Double.class));
 
         assertEquals(rows, matrixActual.getWidth());
@@ -223,8 +223,8 @@ public class MatricesStepDefinitions {
 
     @And("matrix {word} ← {word} * {word}")
     public void matrixMultiplication(String matrixNameC, String matrixNameA, String matrixNameB) {
-        var matrixA = (Matrix) ObjectCache.get(matrixNameA);
-        var matrixB = (Matrix) ObjectCache.get(matrixNameB);
+        var matrixA = ObjectCache.getMatrix(matrixNameA);
+        var matrixB = ObjectCache.getMatrix(matrixNameB);
 
         var matrixC = matrixA.multiply(matrixB);
 
@@ -233,9 +233,9 @@ public class MatricesStepDefinitions {
 
     @Then("{word} * inverse\\({word}) = {word}")
     public void cInverseBA(String matrixNameC, String matrixNameB, String matrixNameA) {
-        var matrixA = (Matrix) ObjectCache.get(matrixNameA);
-        var matrixB = (Matrix) ObjectCache.get(matrixNameB);
-        var matrixC = (Matrix) ObjectCache.get(matrixNameC);
+        var matrixA = ObjectCache.getMatrix(matrixNameA);
+        var matrixB = ObjectCache.getMatrix(matrixNameB);
+        var matrixC = ObjectCache.getMatrix(matrixNameC);
 
         var actual = matrixC.multiply(matrixB.inverse());
 

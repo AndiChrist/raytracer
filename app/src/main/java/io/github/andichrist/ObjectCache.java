@@ -13,4 +13,35 @@ public interface ObjectCache {
   static Object get(String a) {
     return hash.get(a);
   }
+
+  static Sphere getSphere(String a) {
+    return (Sphere) get(a);
+  }
+
+  static Ray getRay(String a) {
+    return (Ray) get(a);
+  }
+
+  static Intersection getIntersection(String a) {
+    return (Intersection) get(a);
+  }
+
+  static Matrix getMatrix(String a) {
+    return (Matrix) get(a);
+  }
+
+  static Tuple getVector(String a) {
+    return (Tuple) get(a);
+  }
+  static Tuple getPoint(String a) {
+    return (Tuple) get(a);
+  }
+  static Tuple getColor(String a) {
+    return (Tuple) get(a);
+  }
+
+  static Tuple getTuple(String a) {
+    return (Tuple) get(a);
+  }
+
 }

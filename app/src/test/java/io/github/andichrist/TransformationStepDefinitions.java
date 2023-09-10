@@ -20,8 +20,8 @@ public class TransformationStepDefinitions {
 
   @Then("transform * {word} = point\\({int}, {int}, {int})")
   public void transformPoint(String pointName, int x, int y, int z) {
-    var transform = (Matrix) ObjectCache.get("transform");
-    var point = (Tuple) ObjectCache.get(pointName);
+    var transform = ObjectCache.getMatrix("transform");
+    var point = ObjectCache.getPoint(pointName);
 
     var expected = point(x, y, z);
 
@@ -32,8 +32,8 @@ public class TransformationStepDefinitions {
 
   @Then("inv * {word} = point\\({double}, {double}, {double})")
   public void invPoint(String pointName, double x, double y, double z) {
-    var transform = (Matrix) ObjectCache.get("inv");
-    var point = (Tuple) ObjectCache.get(pointName);
+    var transform = ObjectCache.getMatrix("inv");
+    var point = ObjectCache.getPoint(pointName);
 
     var expected = point(x, y, z);
 
@@ -44,11 +44,11 @@ public class TransformationStepDefinitions {
 
   @Then("transform * {word} = {word}")
   public void transformVV(String vectorNameA, String vectorNameB) {
-    var transform = (Matrix) ObjectCache.get("transform");
-    var vectorA = (Tuple) ObjectCache.get(vectorNameA);
+    var transform = ObjectCache.getMatrix("transform");
+    var vectorA = ObjectCache.getVector(vectorNameA);
 
     var expected = transform.multiply(vectorA);
-    var actual = (Tuple) ObjectCache.get(vectorNameB);
+    var actual = ObjectCache.getVector(vectorNameB);
 
     assertEquals(expected, actual);
   }
@@ -62,8 +62,8 @@ public class TransformationStepDefinitions {
 
   @Then("{word} * {word} = vector\\({int}, {int}, {int})")
   public void transformVVector(String matrixName, String vectorName, int x, int y, int z) {
-    var matrix = (Matrix) ObjectCache.get(matrixName);
-    var vector = (Tuple) ObjectCache.get(vectorName);
+    var matrix = ObjectCache.getMatrix(matrixName);
+    var vector = ObjectCache.getVector(vectorName);
 
     var expected = matrix.multiply(vector);
     var actual = vector(x, y, z);
@@ -73,8 +73,8 @@ public class TransformationStepDefinitions {
 
   @Then("half_quarter * {word} = point\\({double}, {double}, {double})")
   public void half_quarterPPoint(String pointName, double x, double y, double z) {
-    var matrix = (Matrix) ObjectCache.get("half_quarter");
-    var point = (Tuple) ObjectCache.get(pointName);
+    var matrix = ObjectCache.getMatrix("half_quarter");
+    var point = ObjectCache.getPoint(pointName);
 
     var expected = point(x, y, z);
     var actual = matrix.multiply(point);
@@ -84,8 +84,8 @@ public class TransformationStepDefinitions {
 
   @Then("full_quarter * {word} = point\\({double}, {double}, {double})")
   public void full_quarterPPoint(String pointName, double x, double y, double z) {
-    var matrix = (Matrix) ObjectCache.get("full_quarter");
-    var point = (Tuple) ObjectCache.get(pointName);
+    var matrix = ObjectCache.getMatrix("full_quarter");
+    var point = ObjectCache.getPoint(pointName);
 
     var expected = point(x, y, z);
     var actual = matrix.multiply(point);
@@ -123,8 +123,8 @@ public class TransformationStepDefinitions {
 
   @And("point {word} ← {word} * {word}")
   public void matrixMultiplication(String p1Name, String AName, String pName) {
-    var matrixA = (Matrix) ObjectCache.get(AName);
-    var pointP = (Tuple) ObjectCache.get(pName);
+    var matrixA = ObjectCache.getMatrix(AName);
+    var pointP = ObjectCache.getPoint(pName);
 
     var p1 = matrixA.multiply(pointP);
 
@@ -133,7 +133,7 @@ public class TransformationStepDefinitions {
 
   @Then("{word} = point\\({double}, {double}, {double})")
   public void p2_point(String pointName, double x, double y, double z) {
-    var actual = (Tuple) ObjectCache.get(pointName);
+    var actual = ObjectCache.getPoint(pointName);
     var expected = point(x, y, z);
 
     assertEquals(expected, actual);
@@ -141,9 +141,9 @@ public class TransformationStepDefinitions {
 
   @When("{word} ← {word} * {word} * {word}")
   public void tCBA(String TName, String CName, String BName, String AName) {
-    var C = (Matrix) ObjectCache.get(CName);
-    var B = (Matrix) ObjectCache.get(BName);
-    var A = (Matrix) ObjectCache.get(AName);
+    var C = ObjectCache.getMatrix(CName);
+    var B = ObjectCache.getMatrix(BName);
+    var A = ObjectCache.getMatrix(AName);
 
     var T = C.multiply(B).multiply(A);
 
@@ -152,8 +152,8 @@ public class TransformationStepDefinitions {
 
   @Then("T * {word} = point\\({double}, {double}, {double})")
   public void tPPoint(String pointName, double x, double y, double z) {
-    var transform = (Matrix) ObjectCache.get("T");
-    var point = (Tuple) ObjectCache.get(pointName);
+    var transform = ObjectCache.getMatrix("T");
+    var point = ObjectCache.getPoint(pointName);
 
     var expected = point(x, y, z);
     var actual = transform.multiply(point);
