@@ -265,8 +265,8 @@ public class TupleStepDefinitions {
   public void cPlusColor(String name1, String name2, double red, double green, double blue) {
     var expected =  Tuple.color(red, green, blue);
 
-    var a = ObjectCache.getTuple(name1);
-    var b = ObjectCache.getTuple(name2);
+    var a = ObjectCache.getColor(name1);
+    var b = ObjectCache.getColor(name2);
 
     var actual = a.add(b);
 
@@ -277,33 +277,21 @@ public class TupleStepDefinitions {
   public void cMinusColor(String name1, String name2, double red, double green, double blue) {
     var expected =  Tuple.color(red, green, blue);
 
-    var a = ObjectCache.getTuple(name1);
-    var b = ObjectCache.getTuple(name2);
+    var a = ObjectCache.getColor(name1);
+    var b = ObjectCache.getColor(name2);
 
     var actual = a.subtract(b);
 
     assertEquals(expected, actual);
   }
-/*
-  @Then("{word} * {double} = color\\({double}, {double}, {double})")
-  public void cMultScalarColor(String name, double value, double red, double green, double blue) {
-    final Color expected = (Color) new TupleFactory().create("Color", red, green, blue, 0);
-
-    Color c = (Color) TupleHelper.get(name);
-
-    Color actual = (Color) TupleHelper.multiply(value, c, Color.class);
-
-    assertEquals(expected, actual);
-  }
-*/
 
   // avoid "undefined step reference"
   @Then("{word} * {word} = color\\({double}, {double}, {double})")
   public void cMultColor(String name1, String name2, double red, double green, double blue) {
     var expected = Tuple.color(red, green, blue);
 
-    var a = ObjectCache.getTuple(name1);
-    var b = ObjectCache.getTuple(name2);
+    var a = ObjectCache.getColor(name1);
+    var b = ObjectCache.getColor(name2);
     Tuple actual;
 
     if (b != null) {

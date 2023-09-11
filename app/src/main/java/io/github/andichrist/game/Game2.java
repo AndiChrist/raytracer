@@ -6,8 +6,7 @@ import io.github.andichrist.gfx.PPM;
 import java.awt.*;
 import java.io.IOException;
 
-import static io.github.andichrist.Tuple.point;
-import static io.github.andichrist.Tuple.vector;
+import static io.github.andichrist.Tuple.*;
 
 public interface Game2 {
   static void main(String[] args) throws IOException {
@@ -16,7 +15,7 @@ public interface Game2 {
 
     // projectile starts one unit above the origin.
     // velocity is normalized to 1 unit/tick.
-    var a = vector(1,1.8,0).normalize();
+    var a = normalize(vector(1,1.8,0));
     var velocity = a.multiply(11.25);
 
     var projectile = new Projectile(start, velocity);
