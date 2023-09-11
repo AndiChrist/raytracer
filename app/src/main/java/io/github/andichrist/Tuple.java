@@ -38,9 +38,9 @@ public record Tuple(double x, double y, double z, double w) {
 
   public static Tuple add(Tuple tupleA, Tuple tupleB) {
     return new Tuple(
-        tupleA.x + tupleB.x(),
-        tupleA.y + tupleB.y(),
-        tupleA.z + tupleB.z()
+        tupleA.x + tupleB.x,
+        tupleA.y + tupleB.y,
+        tupleA.z + tupleB.z
     );
   }
 
@@ -50,9 +50,9 @@ public record Tuple(double x, double y, double z, double w) {
 
   public static Tuple subtract(Tuple tupleA, Tuple tupleB) {
     return new Tuple(
-        tupleA.x - tupleB.x(),
-        tupleA.y - tupleB.y(),
-        tupleA.z - tupleB.z()
+        tupleA.x - tupleB.x,
+        tupleA.y - tupleB.y,
+        tupleA.z - tupleB.z
     );
   }
 
