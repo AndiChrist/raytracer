@@ -3,7 +3,7 @@ package io.github.andichrist.game;
 import io.github.andichrist.Canvas;
 import io.github.andichrist.gfx.PPM;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 
 import static io.github.andichrist.Tuple.*;
