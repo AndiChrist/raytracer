@@ -184,4 +184,21 @@ public class RayStepDefinitions {
 
     assertEquals(i.object(), s);
   }
+  
+  @When("{word} ← transform\\({word}, {word})")
+  public void rTransformRM(String newRayName, String rayName, String matrixName) {
+    var r = ObjectCache.getRay(rayName);
+    var m = ObjectCache.getMatrix(matrixName);
+    var r2 = Ray.transform(r, m);
+
+    ObjectCache.set(newRayName, r2);
+  }
+
+  @And("{word}.direction = vector\\({double}, {double}, {double})")
+  public void rDirectionVector(String r2Name, double x, double y, double z) {
+    var v = vector(x, y, z);
+    var r2 = ObjectCache.getRay(r2Name);
+
+    assertEquals(r2.direction(), v);
+  }
 }

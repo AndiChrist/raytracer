@@ -97,7 +97,7 @@ public record Tuple(double x, double y, double z, double w) {
   }
 
   public static Tuple normalize(Tuple tuple) {
-    double magnitude =  magnitude(tuple);
+    double magnitude = magnitude(tuple);
     return new Tuple(
         tuple.x / magnitude,
         tuple.y / magnitude,

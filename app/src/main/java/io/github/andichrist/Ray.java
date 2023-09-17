@@ -2,7 +2,7 @@ package io.github.andichrist;
 
 import java.util.*;
 
-import static io.github.andichrist.Tuple.dot;
+import static io.github.andichrist.Tuple.*;
 import static java.util.Arrays.*;
 
 public record Ray(Tuple origin, Tuple direction) {
@@ -67,5 +67,12 @@ public record Ray(Tuple origin, Tuple direction) {
 
   public static Object hit(ArrayList<Intersection> intersections) {
     return intersections.get(0);
+  }
+
+  public static Ray transform(Ray r, Matrix m) {
+    var newOrigin = m.multiply(r.origin);
+    var newDirection = m.multiply(r.direction);
+
+    return new Ray(newOrigin, newDirection);
   }
 }

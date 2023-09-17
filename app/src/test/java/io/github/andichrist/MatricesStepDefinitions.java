@@ -109,8 +109,13 @@ public class MatricesStepDefinitions {
     }
 
     @Then("{word} = identity_matrix")
-    public void aIdentity_matrix(String matrixName) {
-        var expected = ObjectCache.getMatrix(matrixName);
+    public void aIdentity_matrix(String sphereName) {
+        Matrix expected = null;
+        // check matrixName for parameter (transform)
+        if (sphereName.contains("transform")) {
+            Sphere sphere = ObjectCache.getSphere(sphereName.split("\\.")[0]);
+            expected = sphere.transform();
+        }
 
         assertEquals(expected, identity());
     }

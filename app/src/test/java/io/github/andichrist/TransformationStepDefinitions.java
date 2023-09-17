@@ -133,7 +133,18 @@ public class TransformationStepDefinitions {
 
   @Then("{word} = point\\({double}, {double}, {double})")
   public void p2_point(String pointName, double x, double y, double z) {
-    var actual = ObjectCache.getPoint(pointName);
+    Tuple actual;
+    // check pointName for parameters (origin or direction)
+    if (pointName.contains("origin")) {
+      Ray ray = ObjectCache.getRay(pointName.split("\\.")[0]);
+      actual = ray.origin();
+    } else if (pointName.contains("direction")) {
+      Ray ray = ObjectCache.getRay(pointName.split("\\.")[0]);
+      actual = ray.direction();
+    } else {
+      actual = ObjectCache.getPoint(pointName);
+    }
+
     var expected = point(x, y, z);
 
     assertEquals(expected, actual);

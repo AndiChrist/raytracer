@@ -178,7 +178,7 @@ public record Matrix(double[][] matrix) {
     }
 
 
-    public Matrix translate(int x, int y, int z) {
+    public Matrix translate(double x, double y, double z) {
         matrix[0][3] = x;
         matrix[1][3] = y;
         matrix[2][3] = z;
@@ -186,7 +186,7 @@ public record Matrix(double[][] matrix) {
         return new Matrix(matrix);
     }
 
-    public Matrix scale(int x, int y, int z) {
+    public Matrix scale(double x, double y, double z) {
         matrix[0][0] = x;
         matrix[1][1] = y;
         matrix[2][2] = z;
