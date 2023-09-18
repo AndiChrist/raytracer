@@ -1,9 +1,11 @@
 package io.github.andichrist;
 
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -15,9 +17,16 @@ public class ArrayStepDefinitions {
   }
 
   @When("{word} ← {word} + {word}")
-  public void cAB(String name0, String name1, String name2) {
-    var concat = ArrayHandler.concat(name1, name2);
-    ObjectCache.set(name0, concat);
+  public void cAB(String arrayCName, String arrayAName, String arrayBName) {
+    var arrayA = (int[]) ObjectCache.get(arrayAName);
+    var arrayB = (int[]) ObjectCache.get(arrayBName);
+
+    var arrayC = IntStream.concat(
+        Arrays.stream(arrayA),
+        Arrays.stream(arrayB)
+    ).toArray();
+
+    ObjectCache.set(arrayCName, arrayC);
   }
 
   @Then("{word} = array\\({int}, {int}, {int}, {int}, {int}, {int})")
