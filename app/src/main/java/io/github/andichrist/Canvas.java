@@ -1,6 +1,6 @@
 package io.github.andichrist;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Arrays;
 
 public class Canvas {

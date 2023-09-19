@@ -5,6 +5,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import static io.github.andichrist.MathOperations.DELTA;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,52 +20,83 @@ public class TupleStepDefinitions {
   @Then("{word}.red = {double}")
   @Then("{word}.x = {double}")
   public void getX(String name, double value) {
-    var tuple = ObjectCache.getTuple(name);
-    assertEquals(tuple.x(), value, 0.1);
+    var object = ObjectCache.get(name);
+    var x = 0.0;
+    if (object instanceof Tuple t) {
+      x = t.x();
+    } else if (object instanceof Vector v) {
+      x = v.x();
+    } else if (object instanceof Color c) {
+      x = c.x();
+    }
+    assertEquals(x, value, DELTA);
   }
 
   @Then("{word}.green = {double}")
   @Then("{word}.y = {double}")
   public void getY(String name, double value) {
-    var tuple = ObjectCache.getTuple(name);
-    assertEquals(tuple.y(), value, 0.1);
+    var object = ObjectCache.get(name);
+    var y = 0.0;
+    if (object instanceof Tuple t) {
+      y = t.y();
+    } else if (object instanceof Vector v) {
+      y = v.y();
+    } else if (object instanceof Color c) {
+      y = c.y();    }
+    assertEquals(y, value, DELTA);
   }
 
   @Then("{word}.blue = {double}")
   @Then("{word}.z = {double}")
   public void getZ(String name, double value) {
-    var tuple = ObjectCache.getTuple(name);
-    assertEquals(tuple.z(), value, 0.1);
+    var object = ObjectCache.get(name);
+    var z = 0.0;
+    if (object instanceof Tuple t) {
+      z = t.z();
+    } else if (object instanceof Vector v) {
+      z = v.z();
+    } else if (object instanceof Color c) {
+      z = c.z();
+    }
+    assertEquals(z, value, DELTA);
   }
 
   @Then("{word}.w = {double}")
   public void getW(String name, double value) {
-    var tuple = ObjectCache.getTuple(name);
-    assertEquals(tuple.w(), value, 0.1);
+    var object = ObjectCache.get(name);
+    var w = 0.0;
+    if (object instanceof Tuple t) {
+      w = t.w();
+    } else if (object instanceof Vector v) {
+      w = 1.0;
+    } else if (object instanceof Color c) {
+      w = 0.0;
+    }
+    assertEquals(w, value, DELTA);
   }
 
   @And("{word} is a point")
   public void aIsAPoint(String name) {
-    var tuple = ObjectCache.getPoint(name);
-    assertEquals(tuple.w(), Tuple.POINT, 0.1);
+    var tuple = ObjectCache.getTuple(name);
+    assertEquals(tuple.w(), 1.0, DELTA);
   }
 
   @And("{word} is not a point")
   public void aIsNotAPoint(String name) {
-    var tuple = ObjectCache.getVector(name);
-    assertEquals(tuple.w(), Tuple.VECTOR, 0.1);
+    var tuple = ObjectCache.getTuple(name);
+    assertEquals(tuple.w(), 0.0, DELTA);
   }
 
   @And("{word} is a vector")
   public void aIsAVector(String name) {
     var tuple = ObjectCache.getTuple(name);
-    assertEquals(tuple.w(), 0.0, 0.1);
+    assertEquals(tuple.w(), 0.0, DELTA);
   }
 
   @And("{word} is not a vector")
   public void aIsNotAVector(String name) {
     var tuple = ObjectCache.getTuple(name);
-    assertEquals(tuple.w(), 1.0, 0.1);
+    assertEquals(tuple.w(), 1.0, DELTA);
   }
 
   @Then("{word} + {word} = tuple\\({double}, {double}, {double}, {double})")
@@ -83,57 +115,40 @@ public class TupleStepDefinitions {
 
   @Given("{word} ← point\\({double}, {double}, {double})")
   public void pPoint(String name, double x, double y, double z) {
-    var point = Tuple.point(x, y, z);
+    var point = new Point(x, y, z);
     ObjectCache.set(name, point);
   }
 
   @Given("{word} ← vector\\({double}, {double}, {double})")
   public void vVector(String name, double x, double y, double z) {
-    var vector = Tuple.vector(x, y, z);
+    var vector = new Vector(x, y, z);
     ObjectCache.set(name, vector);
   }
 
   @Then("{word} - {word} = vector\\({double}, {double}, {double})")
   public void pPVector(String name1, String name2, double x, double y, double z) {
-    var expected = Tuple.vector(x, y, z);
+    var expected = new Vector(x, y, z);
+    Vector actual;
 
-    var obj1 = ObjectCache.getTuple(name1);
-    var obj2 = ObjectCache.getTuple(name2);
+    if (name1.startsWith("p") && name2.startsWith("p")) {
+      var p1 = ObjectCache.getPoint(name1);
+      var p2 = ObjectCache.getPoint(name2);
 
-    // TODO correct this
-    Tuple p1 = null;
-    Tuple p2 = null;
-    Tuple v1 = null;
-    Tuple v2 = null;
+      Point point = p1.subtract(p2);
+      actual = new Vector(point.x(), point.y(), point.z());
+    } else {
+      var v1 = ObjectCache.getVector(name1);
+      var v2 = ObjectCache.getVector(name2);
 
-    Tuple actual = null;
-
-    if (obj1.isPoint()) {
-      p1 = obj1;
-    }
-    else if (obj1.isVector()) {
-      v1 = obj1;
-    }
-
-    if (obj2.isPoint()) {
-      p2 = obj2;
-    }
-    else if (obj2.isVector()) {
-      v2 = obj2;
-    }
-
-    if (p1 != null && p2 != null)
-      actual = p1.subtract(p2);
-    else if (v1 != null && v2 != null)
       actual = v1.subtract(v2);
+    }
 
-    assertTrue(actual.isVector());
     assertEquals(expected, actual);
   }
 
   @Then("{word} - {word} = point\\({double}, {double}, {double})")
   public void subtractVector(String name0, String name1, double x, double y, double z) {
-    var expected = Tuple.point(x, y, z);
+    var expected = new Point(x, y, z);
 
     var point = ObjectCache.getPoint(name0);
     var vector = ObjectCache.getVector(name1);
@@ -170,7 +185,7 @@ public class TupleStepDefinitions {
     assertEquals(expected, actual);
   }
 
-  @Then("{word} .\\/. {double} = tuple\\({double}, {double}, {double}, {double})")
+  @Then("{word} ÷ {double} = tuple\\({double}, {double}, {double}, {double})")
   public void aTupleDiv(String name, double arg0, double x, double y, double z, double w) {
     var t = new Tuple(x, y, z, w);
     ObjectCache.set("expected", t);
@@ -185,28 +200,28 @@ public class TupleStepDefinitions {
 
   @Then("magnitude\\({word}) = {double}")
   public void magnitudeV(String name, double expected) {
-    var v = ObjectCache.getTuple(name);
+    var v = ObjectCache.getVector(name);
 
     var actual = v.magnitude();
 
-    assertEquals(expected, actual, 1);
+    assertEquals(expected, actual, DELTA);
   }
 
   @Then("magnitude\\({word}) = √{double}")
   public void magnitudeV2(String name, double value) {
-    var v = ObjectCache.getTuple(name);
+    var v = ObjectCache.getVector(name);
 
     var expected = Math.sqrt(value);
     var actual = v.magnitude();
 
-    assertEquals(expected, actual, 1);
+    assertEquals(expected, actual, DELTA);
   }
 
   @Then("normalize\\({word}) = vector\\({double}, {double}, {double})")
   public void normalizeVVector(String name, double x, double y, double z) {
-    var expected = Tuple.vector(x, y, z);
+    var expected = new Vector(x, y, z);
 
-    var v = ObjectCache.getTuple(name);
+    var v = ObjectCache.getVector(name);
     var actual = v.normalize();
 
     assertEquals(expected, actual);
@@ -214,19 +229,19 @@ public class TupleStepDefinitions {
 
   @Then("normalize\\({word}) = approximately vector\\({double}, {double}, {double})")
   public void normalizeVApproximatelyVector(String name, double x, double y, double z) {
-    var expected = Tuple.vector(x, y, z);
+    var expected = new Vector(x, y, z);
 
-    var v = ObjectCache.getTuple(name);
+    var v = ObjectCache.getVector(name);
     var actual = v.normalize();
 
-    assertEquals(expected.x(), actual.x(), 0.00001);
-    assertEquals(expected.y(), actual.y(), 0.00001);
-    assertEquals(expected.z(), actual.z(), 0.00001);
+    assertEquals(expected.x(), actual.x(), DELTA);
+    assertEquals(expected.y(), actual.y(), DELTA);
+    assertEquals(expected.z(), actual.z(), DELTA);
   }
 
   @When("{word} ← normalize\\({word})")
   public void normNormalizeV(String norm, String name) {
-    var v = ObjectCache.getTuple(name);
+    var v = ObjectCache.getVector(name);
     var actual = v.normalize();
 
     ObjectCache.set(norm, actual);
@@ -234,20 +249,20 @@ public class TupleStepDefinitions {
 
   @Then("dot\\({word}, {word}) = {double}")
   public void dotAB(String arg0, String arg1, double expected) {
-    var v1 = ObjectCache.getTuple(arg0);
-    var v2 = ObjectCache.getTuple(arg1);
+    var v1 = ObjectCache.getVector(arg0);
+    var v2 = ObjectCache.getVector(arg1);
 
     var actual = v1.dot(v2);
 
-    assertEquals(expected, actual, 1);
+    assertEquals(expected, actual, DELTA);
   }
 
   @Then("cross\\({word}, {word}) = vector\\({double}, {double}, {double})")
   public void crossABVector(String arg0, String arg1, double x, double y, double z) {
-    var expected = Tuple.vector(x, y, z);
+    var expected = new Vector(x, y, z);
 
-    var a = ObjectCache.getTuple(arg0);
-    var b = ObjectCache.getTuple(arg1);
+    var a = ObjectCache.getVector(arg0);
+    var b = ObjectCache.getVector(arg1);
 
     var actual = a.cross(b);
 
@@ -256,14 +271,14 @@ public class TupleStepDefinitions {
 
   @Given("{word} ← color\\({double}, {double}, {double})")
   public void color(String name, double x, double y, double z) {
-    var color = Tuple.color(x, y, z);
+    var color = new Color(x, y, z);
     ObjectCache.set(name, color);
   }
 
 
   @Then("{word} + {word} = color\\({double}, {double}, {double})")
   public void cPlusColor(String name1, String name2, double red, double green, double blue) {
-    var expected =  Tuple.color(red, green, blue);
+    var expected =  new Color(red, green, blue);
 
     var a = ObjectCache.getColor(name1);
     var b = ObjectCache.getColor(name2);
@@ -275,7 +290,7 @@ public class TupleStepDefinitions {
 
   @Then("{word} - {word} = color\\({double}, {double}, {double})")
   public void cMinusColor(String name1, String name2, double red, double green, double blue) {
-    var expected =  Tuple.color(red, green, blue);
+    var expected =  new Color(red, green, blue);
 
     var a = ObjectCache.getColor(name1);
     var b = ObjectCache.getColor(name2);
@@ -288,11 +303,11 @@ public class TupleStepDefinitions {
   // avoid "undefined step reference"
   @Then("{word} * {word} = color\\({double}, {double}, {double})")
   public void cMultColor(String name1, String name2, double red, double green, double blue) {
-    var expected = Tuple.color(red, green, blue);
+    var expected = new Color(red, green, blue);
 
     var a = ObjectCache.getColor(name1);
     var b = ObjectCache.getColor(name2);
-    Tuple actual;
+    Color actual;
 
     if (b != null) {
       actual = a.multiply(b);

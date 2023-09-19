@@ -1,12 +1,13 @@
 package io.github.andichrist.game;
 
-import io.github.andichrist.Tuple;
+import io.github.andichrist.Point;
+import io.github.andichrist.Vector;
 
-public record Projectile(Tuple position, Tuple velocity) {
+public record Projectile(Point position, Vector velocity) {
 
   public Projectile tick(Environment env, Projectile proj) {
-    Tuple position = proj.position().add(proj.velocity());
-    Tuple velocity = proj.velocity().add(env.gravity().add(env.wind()));
+    Point position = proj.position().add(proj.velocity());
+    Vector velocity = proj.velocity().add(env.gravity().add(env.wind()));
 
     return new Projectile(position, velocity);
   }

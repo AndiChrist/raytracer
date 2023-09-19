@@ -1,19 +1,14 @@
 package io.github.andichrist;
 
+import io.github.andichrist.shapes.Sphere;
+
 import java.util.*;
 
-import static io.github.andichrist.Tuple.*;
 import static java.util.Arrays.*;
 
-public record Ray(Tuple origin, Tuple direction) {
-  public Ray {
-    if (!origin.isPoint())
-      throw new IllegalArgumentException("Origin should be a POINT");
-    if (!direction.isVector())
-      throw new IllegalArgumentException("Direction should be a VECTOR");
-  }
+public record Ray(Point origin, Vector direction) {
 
-  public Tuple position(double pos) {
+  public Point position(double pos) {
     return origin.add(direction.multiply(pos));
   }
 
@@ -25,9 +20,9 @@ public record Ray(Tuple origin, Tuple direction) {
     var u = ray.direction;
     var r = sphere.radius();
 
-    var a = dot(u, u); // = u . u = ||u||^2
-    var b = 2 * dot(u, o_c); // = 2[u . (o - c)]
-    var c = dot(o_c, o_c) - r * r;
+    var a = u.dot(u); // = u . u = ||u||^2
+    var b = 2 * u.dot(o_c); // = 2[u . (o - c)]
+    var c = o_c.dot(o_c) - r * r;
        // = (o - c) * (o - c) - r^2 = ||o - c||^2 - r^2
 
     var discriminant = b * b - 4 * a * c;
@@ -51,16 +46,11 @@ public record Ray(Tuple origin, Tuple direction) {
 
   public static Object intersections(ArrayList<Intersection> intersections) {
     // Entfernen von Intersection-Records mit negativen "t"-Werten und Sortieren
-    Iterator<Intersection> iterator = intersections.iterator();
-    while (iterator.hasNext()) {
-      Intersection intersection = iterator.next();
-      if (intersection.t() < 0) {
-        iterator.remove(); // Entfernen Sie das Element mit negativem "t"-Wert
-      }
-    }
+    // Entfernen Sie das Element mit negativem "t"-Wert
+    intersections.removeIf(intersection -> intersection.t() < 0);
 
     // Sortieren der Liste nach "t" aufsteigend
-    intersections.sort((a, b) -> Double.compare(a.t(), b.t()));
+    intersections.sort(Comparator.comparingDouble(Intersection::t));
 
     return intersections;
   }

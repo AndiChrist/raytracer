@@ -4,6 +4,7 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.github.andichrist.shapes.Sphere;
 
 import static io.github.andichrist.Matrix.identity;
 import static org.junit.jupiter.api.Assertions.*;
@@ -109,24 +110,26 @@ public class MatricesStepDefinitions {
     }
 
     @Then("{word} = identity_matrix")
-    public void aIdentity_matrix(String sphereName) {
+    public void aIdentity_matrix(String name) {
         Matrix expected = null;
         // check matrixName for parameter (transform)
-        if (sphereName.contains("transform")) {
-            Sphere sphere = ObjectCache.getSphere(sphereName.split("\\.")[0]);
+        if (name.contains("transform")) {
+            Sphere sphere = ObjectCache.getSphere(name.split("\\.")[0]);
             expected = sphere.transform();
+        } else {
+            expected = ObjectCache.getMatrix(name);
         }
 
         assertEquals(expected, identity());
     }
 
-    @Then("determinant\\({word}) = {int}")
-    public void determinantA(String matrixName, int actual) {
+    @Then("determinant\\({word}) = {double}")
+    public void determinantA(String matrixName, double actual) {
         var matrix = ObjectCache.getMatrix(matrixName);
 
         var determinant = matrix.determinant();
 
-        assertEquals((int) determinant, actual);
+        assertEquals(determinant, actual);
     }
 
     @Then("submatrix\\({word}, {int}, {int}) is the following {int}x{int} matrix:")

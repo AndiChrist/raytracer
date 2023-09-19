@@ -1,5 +1,8 @@
 package io.github.andichrist;
 
+import io.github.andichrist.shapes.Sphere;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,38 +13,43 @@ public interface ObjectCache {
     hash.put(name, tuple);
   }
 
-  static Object get(String a) {
-    return hash.get(a);
+  static MathOperations get(String name) {
+    return (MathOperations) hash.get(name);
   }
 
-  static Sphere getSphere(String a) {
-    return (Sphere) get(a);
+  static Sphere getSphere(String name) {
+    return (Sphere) hash.get(name);
   }
 
-  static Ray getRay(String a) {
-    return (Ray) get(a);
+  static Ray getRay(String name) {
+    return (Ray) hash.get(name);
   }
 
-  static Intersection getIntersection(String a) {
-    return (Intersection) get(a);
+  static Intersection getIntersection(String name) {
+    return (Intersection) hash.get(name);
   }
 
-  static Matrix getMatrix(String a) {
-    return (Matrix) get(a);
+  static Matrix getMatrix(String name) {
+    return (Matrix) hash.get(name);
   }
 
-  static Tuple getVector(String a) {
-    return (Tuple) get(a);
-  }
-  static Tuple getPoint(String a) {
-    return (Tuple) get(a);
-  }
-  static Tuple getColor(String a) {
-    return (Tuple) get(a);
+  static Vector getVector(String name) {
+    return (Vector) hash.get(name);
   }
 
-  static Tuple getTuple(String a) {
-    return (Tuple) get(a);
+  static Point getPoint(String name) {
+    return (Point) hash.get(name);
   }
 
+  static Color getColor(String name) {
+    return (Color) hash.get(name);
+  }
+
+  static Tuple getTuple(String name) {
+    return (Tuple) hash.get(name);
+  }
+
+  static ArrayList getArrayList(String name) {
+    return (ArrayList) hash.get(name);
+  }
 }

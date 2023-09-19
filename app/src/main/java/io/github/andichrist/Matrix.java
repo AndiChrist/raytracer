@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import static io.github.andichrist.MathOperations.DELTA;
+
 public record Matrix(double[][] matrix) {
 
     public Matrix(List<List<Double>> testData) {
@@ -86,6 +88,32 @@ public record Matrix(double[][] matrix) {
         return new Tuple(result[0], result[1], result[2], result[3]);
     }
 
+    public Point multiply(Point point) {
+        double[] result = new double[this.getWidth()];
+        for (int row = 0; row < result.length; row++) {
+            double cell = 0;
+            for (int i = 0; i < result.length; i++) {
+                cell += this.get(row, i) * point.get(i);
+            }
+            result[row] = cell;
+        }
+
+        return new Point(result[0], result[1], result[2]);
+    }
+
+    public Vector multiply(Vector vector) {
+        double[] result = new double[this.getWidth()];
+        for (int row = 0; row < result.length; row++) {
+            double cell = 0;
+            for (int i = 0; i < result.length; i++) {
+                cell += this.get(row, i) * vector.get(i);
+            }
+            result[row] = cell;
+        }
+
+        return new Vector(result[0], result[1], result[2]);
+    }
+
     // Laplace-Entwicklung
     public double determinant() {
         int n = getWidth();
@@ -148,7 +176,7 @@ public record Matrix(double[][] matrix) {
     @Override
     public String toString() {
         StringBuffer result = new StringBuffer();
-        Arrays.stream(matrix).forEach((row) -> {
+        Arrays.stream(matrix).forEach(row -> {
             result.append("[");
             Arrays.stream(row).forEach((el) -> result.append(" ").append(el).append(" "));
             result.append("]").append("\n");
@@ -240,7 +268,7 @@ public record Matrix(double[][] matrix) {
             return 1;
         }
 
-        private static final double epsilon = 1e-5; // Toleranz für den Vergleich
+        private static final double epsilon = DELTA; // Toleranz für den Vergleich
 
         private static boolean compareMatrices(Matrix expected, Matrix actual) {
             double[][] expectedData = expected.matrix;

@@ -4,14 +4,12 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.github.andichrist.shapes.Sphere;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static io.github.andichrist.Ray.intersect;
-import static io.github.andichrist.Tuple.point;
-import static io.github.andichrist.Tuple.vector;
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -19,18 +17,18 @@ public class RayStepDefinitions {
 
   @When("{word} ← ray\\({word}, {word})")
   public void r_ray_origin_direction(String rayName, String originName, String directionName) {
-    var origin = ObjectCache.getTuple(originName);
-    var direction = ObjectCache.getTuple(directionName);
+    var origin = ObjectCache.getPoint(originName);
+    var direction = ObjectCache.getVector(directionName);
 
-    var r = new Ray(origin, direction);
+    var ray = new Ray(origin, direction);
 
-    ObjectCache.set(rayName, r);
+    ObjectCache.set(rayName, ray);
   }
 
   @Then("{word}.origin = {word}")
   public void r_origin_origin(String rayName, String originName) {
     var r = ObjectCache.getRay(rayName);
-    var origin = ObjectCache.getTuple(originName);
+    var origin = ObjectCache.getPoint(originName);
 
     assertEquals(r.origin(), origin);
   }
@@ -38,15 +36,15 @@ public class RayStepDefinitions {
   @Then("{word}.direction = {word}")
   public void r_direction_direction(String rayName, String directionName) {
     var r = ObjectCache.getRay(rayName);
-    var direction = ObjectCache.getTuple(directionName);
+    var direction = ObjectCache.getVector(directionName);
 
     assertEquals(r.direction(), direction);
   }
 
   @Given("{word} ← ray\\(point\\({double}, {double}, {double}), vector\\({double}, {double}, {double}))")
   public void rRayPointVector(String rayName, double px, double py, double pz, double vx, double vy, double vz) {
-    var point = point(px, py, pz);
-    var vector = vector(vx, vy, vz);
+    var point = new Point(px, py, pz);
+    var vector = new Vector(vx, vy, vz);
 
     var r = new Ray(point, vector);
 
@@ -56,7 +54,7 @@ public class RayStepDefinitions {
 
   @Then("position\\({word}, {double}) = point\\({double}, {double}, {double})")
   public void positionRPoint(String rayName, double pos, double px, double py, double pz) {
-    var point = point(px, py, pz);
+    var point = new Point(px, py, pz);
     var r = ObjectCache.getRay(rayName);
 
     assertEquals(r.position(pos), point);
@@ -81,7 +79,7 @@ public class RayStepDefinitions {
 
   @Then("{word}.count = {int}")
   public void xsCount(String intersectsName, int count) {
-    var xs = (ArrayList) ObjectCache.get(intersectsName);
+    var xs = ObjectCache.getArrayList(intersectsName);
 
     assertEquals(xs.size(), count);
   }
@@ -111,14 +109,14 @@ public class RayStepDefinitions {
 
   @Then("xs[{int}].t = {double}")
   public void xsT(int index, double t) {
-    var xs = (ArrayList<Intersection>) ObjectCache.get("xs");
+    var xs = (ArrayList<Intersection>) ObjectCache.getArrayList("xs");
 
     assertEquals(xs.get(index).t(), t);
   }
 
   @And("xs[{int}].object = {word}")
   public void iObjectS(int index, String sphereName) {
-    var xs = (ArrayList<Intersection>) ObjectCache.get("xs");
+    var xs = (ArrayList<Intersection>) ObjectCache.getArrayList("xs");
     var s = ObjectCache.getSphere(sphereName);
 
     assertEquals(xs.get(index).object(), s);
@@ -148,7 +146,7 @@ public class RayStepDefinitions {
 
   @When("i ← hit\\({word})")
   public void iHitXs(String iArrayName) {
-    var xs = (ArrayList<Intersection>) ObjectCache.get(iArrayName);
+    var xs = (ArrayList<Intersection>) ObjectCache.getArrayList(iArrayName);
 
     var i = (xs.isEmpty()) ? null : Ray.hit(xs);
 
@@ -196,7 +194,7 @@ public class RayStepDefinitions {
 
   @And("{word}.direction = vector\\({double}, {double}, {double})")
   public void rDirectionVector(String r2Name, double x, double y, double z) {
-    var v = vector(x, y, z);
+    var v = new Vector(x, y, z);
     var r2 = ObjectCache.getRay(r2Name);
 
     assertEquals(r2.direction(), v);

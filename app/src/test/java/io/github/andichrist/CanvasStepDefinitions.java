@@ -6,7 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.github.andichrist.gfx.PPM;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

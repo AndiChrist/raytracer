@@ -5,8 +5,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import static io.github.andichrist.Tuple.point;
-import static io.github.andichrist.Tuple.vector;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TransformationStepDefinitions {
@@ -23,7 +21,7 @@ public class TransformationStepDefinitions {
     var transform = ObjectCache.getMatrix("transform");
     var point = ObjectCache.getPoint(pointName);
 
-    var expected = point(x, y, z);
+    var expected = new Point(x, y, z);
 
     var actual = transform.multiply(point);
 
@@ -35,7 +33,7 @@ public class TransformationStepDefinitions {
     var transform = ObjectCache.getMatrix("inv");
     var point = ObjectCache.getPoint(pointName);
 
-    var expected = point(x, y, z);
+    var expected = new Point(x, y, z);
 
     var actual = transform.multiply(point);
 
@@ -66,7 +64,7 @@ public class TransformationStepDefinitions {
     var vector = ObjectCache.getVector(vectorName);
 
     var expected = matrix.multiply(vector);
-    var actual = vector(x, y, z);
+    var actual = new Vector(x, y, z);
 
     assertEquals(expected, actual);
   }
@@ -76,7 +74,7 @@ public class TransformationStepDefinitions {
     var matrix = ObjectCache.getMatrix("half_quarter");
     var point = ObjectCache.getPoint(pointName);
 
-    var expected = point(x, y, z);
+    var expected = new Point(x, y, z);
     var actual = matrix.multiply(point);
 
     assertEquals(expected, actual);
@@ -87,7 +85,7 @@ public class TransformationStepDefinitions {
     var matrix = ObjectCache.getMatrix("full_quarter");
     var point = ObjectCache.getPoint(pointName);
 
-    var expected = point(x, y, z);
+    var expected = new Point(x, y, z);
     var actual = matrix.multiply(point);
 
     assertEquals(expected, actual);
@@ -133,19 +131,20 @@ public class TransformationStepDefinitions {
 
   @Then("{word} = point\\({double}, {double}, {double})")
   public void p2_point(String pointName, double x, double y, double z) {
-    Tuple actual;
+    Point actual;
     // check pointName for parameters (origin or direction)
     if (pointName.contains("origin")) {
       Ray ray = ObjectCache.getRay(pointName.split("\\.")[0]);
       actual = ray.origin();
     } else if (pointName.contains("direction")) {
       Ray ray = ObjectCache.getRay(pointName.split("\\.")[0]);
-      actual = ray.direction();
+      Vector direction = ray.direction();
+      actual = new Point(direction.x(), direction.y(), direction.z());
     } else {
       actual = ObjectCache.getPoint(pointName);
     }
 
-    var expected = point(x, y, z);
+    var expected = new Point(x, y, z);
 
     assertEquals(expected, actual);
   }
@@ -166,7 +165,7 @@ public class TransformationStepDefinitions {
     var transform = ObjectCache.getMatrix("T");
     var point = ObjectCache.getPoint(pointName);
 
-    var expected = point(x, y, z);
+    var expected = new Point(x, y, z);
     var actual = transform.multiply(point);
 
     assertEquals(expected, actual);
