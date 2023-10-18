@@ -10,7 +10,7 @@ repositories {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(20)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -25,9 +25,9 @@ dependencies {
 
     // Cucumber
     // https://mvnrepository.com/artifact/io.cucumber/cucumber-java
-    implementation group: 'io.cucumber', name: 'cucumber-java', version: '7.13.0'
+    implementation group: 'io.cucumber', name: 'cucumber-java', version: '7.14.0'
     // https://mvnrepository.com/artifact/io.cucumber/cucumber-junit
-    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '7.13.0'
+    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '7.14.0'
 }
 
 tasks.named('test') {

@@ -5,6 +5,9 @@ import java.util.Comparator;
 import java.util.List;
 
 import static io.github.andichrist.MathOperations.DELTA;
+import static java.lang.Math.*;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 public record Matrix(double[][] matrix) {
 
@@ -225,30 +228,41 @@ public record Matrix(double[][] matrix) {
     public static Matrix rotate_x(double r) {
         return new Matrix(new double[][]{
             {1, 0, 0, 0},
-            {0, Math.cos(r), -Math.sin(r), 0},
-            {0, Math.sin(r), Math.cos(r), 0},
+            {0, cos(r), -sin(r), 0},
+            {0, sin(r), cos(r), 0},
             {0, 0, 0, 1}
         });
     }
 
     public static Matrix rotate_y(double r) {
         return new Matrix(new double[][]{
-            {Math.cos(r), 0, Math.sin(r), 0},
+            {cos(r), 0, sin(r), 0},
             {0, 1, 0, 0},
-            {-Math.sin(r), 0, Math.cos(r), 0},
+            {-sin(r), 0, cos(r), 0},
             {0, 0, 0, 1}
         });
     }
 
     public static Matrix rotate_z(double r) {
         return new Matrix(new double[][]{
-            {Math.cos(r), -Math.sin(r), 0, 0},
-            {Math.sin(r), Math.cos(r), 0, 0},
+            {cos(r), -sin(r), 0, 0},
+            {sin(r), cos(r), 0, 0},
             {0, 0, 1, 0},
             {0, 0, 0, 1}
         });
     }
 
+    @SuppressWarnings("NonAsciiCharacters")
+    public static Matrix rotate(Vector vector, double θ) {
+        var x = vector.x();
+        var y = vector.y();
+        var z = vector.z();
+        return new Matrix(new double[][] {
+            {x * x * (1 - cos(θ)) + cos(θ),     y * x * (1 - cos(θ)) - z * sin(θ), z * x * (1 - cos(θ)) + y * sin(θ)},
+            {x * y * (1 - cos(θ)) + z * sin(θ), y * y * (1 - cos(θ)) + cos(θ),     z * y * (1 - cos(θ)) - x * sin(θ)},
+            {x * z * (1 - cos(θ)) - y * sin(θ), y * z * (1 - cos(θ)) + x * sin(θ), z * z * (1 - cos(θ)) + cos(θ)}
+        });
+    }
 
     public static Matrix shear(int xy, int xz, int yx, int yz, int zx, int zy) {
         return new Matrix(new double[][]{
@@ -279,7 +293,7 @@ public record Matrix(double[][] matrix) {
 
             for (int i = 0; i < expectedData.length; i++) {
                 for (int j = 0; j < expectedData[i].length; j++) {
-                    if (Math.abs(expectedData[i][j] - actualData[i][j]) > MatrixComparator.epsilon) {
+                    if (abs(expectedData[i][j] - actualData[i][j]) > MatrixComparator.epsilon) {
                         return false; // Elemente unterscheiden sich um mehr als epsilon
                     }
                 }

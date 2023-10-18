@@ -4,6 +4,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.github.andichrist.shapes.Sphere;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -169,5 +170,26 @@ public class TransformationStepDefinitions {
     var actual = transform.multiply(point);
 
     assertEquals(expected, actual);
+  }
+
+  @When("set_transform\\({word}, {word})")
+  public void set_transformST(String sphereName, String matrixName) {
+    var s = ObjectCache.getSphere(sphereName);
+    var t = ObjectCache.getMatrix(matrixName);
+
+    var x = t.translate(s.origin().x(), s.origin().y(), s.origin().z());
+
+    //var newS = new Sphere(s.id()+1, x, s.radius());
+
+    //ObjectCache.set(sphereName, newS);
+
+  }
+
+  @Then("{word}.transform = {word}")
+  public void sTransformT(String sphereName, String matrixName) {
+    var s = ObjectCache.getSphere(sphereName);
+    var t = ObjectCache.getMatrix(matrixName);
+
+    assertEquals(s.transform(), t);
   }
 }

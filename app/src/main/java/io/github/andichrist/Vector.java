@@ -45,6 +45,10 @@ public record Vector(double x, double y, double z) implements MathOperations<Vec
     );
   }
 
+  public boolean isUnit() {
+    return Double.compare(magnitude(), 1.0) == 0;
+  }
+
   @Override
   public double dot(Vector other) {
     return x * other.x +
