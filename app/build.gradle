@@ -23,11 +23,15 @@ dependencies {
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
 
+    // Module "junit-platform-suite" of JUnit 5
+    // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-suite
+    testImplementation group: 'org.junit.platform', name: 'junit-platform-suite', version: '1.10.0'
+
     // Cucumber
     // https://mvnrepository.com/artifact/io.cucumber/cucumber-java
-    implementation group: 'io.cucumber', name: 'cucumber-java', version: '7.14.0'
-    // https://mvnrepository.com/artifact/io.cucumber/cucumber-junit
-    testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: '7.14.0'
+    testImplementation group: 'io.cucumber', name: 'cucumber-java', version: '7.14.0'
+    // https://mvnrepository.com/artifact/io.cucumber/cucumber-junit-platform-engine
+    testImplementation group: 'io.cucumber', name: 'cucumber-junit-platform-engine', version: '7.14.0'
 }
 
 tasks.named('test') {
