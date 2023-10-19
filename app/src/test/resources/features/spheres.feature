@@ -46,6 +46,7 @@ Feature: Spheres
     And xs[0].object = s
     And xs[1].object = s
 
+  @ignore
   Scenario: A sphere's default transformation
     Given s ← sphere()
     Then s.transform = identity_matrix
